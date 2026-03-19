@@ -124,7 +124,7 @@
         name  = "Joni Hendrickson";
         #JHM TODO: Make a way to override this per-machine with
         # a config specific to work or personal
-        email = "contact@joni.site";
+        email = "jonathan.hendrickson@bonsairobotics.ai";
       };
       init.defaultBranch = "main";
     };
