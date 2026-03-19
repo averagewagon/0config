@@ -8,13 +8,18 @@ Reloading the Nix Home Manager:
 home-manager switch --flake ~/0config
 ```
 
-Configuring the git user in this repo:
+Registering my personal key (each boot):
+```
+ssh-add ~/.ssh/personal_key
+```
+
+Configuring the git user in this repo (once per clone):
 ```
 git config user.name "Joni Hendrickson"
 git config user.email "contact@joni.site"
 ```
 
-Registering my personal key (each boot):
+Setting my remote (once per clone):
 ```
-ssh-add ~/.ssh/personal_key
+git remote set-url origin git@github-personal:averagewagon/0config.git
 ```
