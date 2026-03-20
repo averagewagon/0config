@@ -1,4 +1,4 @@
-{ config, pkgs,  ... }:
+{ config, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -41,6 +41,11 @@
     #JHM My installed packages through Home Manager itself
     micro
     # zed-editor
+    #
+
+    #JHM Language server for Nix
+    nil
+    nixd
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -96,18 +101,35 @@
   # };
   # };
 
-
   #JHM Managing flatpak packages
   services.flatpak = {
     enable = true;
 
     packages = [
-        { appId = "com.bitwarden.desktop"; origin = "flathub"; }
-        { appId = "io.gitlab.librewolf-community"; origin = "flathub"; }
-        { appId = "org.chromium.Chromium"; origin = "flathub"; }
-        { appId = "md.obsidian.Obsidian"; origin = "flathub"; }
-        { appId = "dev.zed.Zed"; origin = "flathub"; }
-        { appId = "com.slack.Slack"; origin = "flathub"; }
+      {
+        appId = "com.bitwarden.desktop";
+        origin = "flathub";
+      }
+      {
+        appId = "io.gitlab.librewolf-community";
+        origin = "flathub";
+      }
+      {
+        appId = "org.chromium.Chromium";
+        origin = "flathub";
+      }
+      {
+        appId = "md.obsidian.Obsidian";
+        origin = "flathub";
+      }
+      {
+        appId = "dev.zed.Zed";
+        origin = "flathub";
+      }
+      {
+        appId = "com.slack.Slack";
+        origin = "flathub";
+      }
     ];
 
     #JHM Enabling auto-updates for flatpaks
@@ -122,7 +144,7 @@
     enable = true;
     settings = {
       user = {
-        name  = "Joni Hendrickson";
+        name = "Joni Hendrickson";
         #JHM TODO: Make a way to override this per-machine with
         # a config specific to work or personal
         email = "jonathan.hendrickson@bonsairobotics.ai";
