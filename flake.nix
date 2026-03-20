@@ -14,7 +14,12 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, nix-flatpak, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      nix-flatpak,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -29,7 +34,7 @@
           ./home.nix
 
           #JHM Adding the nix-flatpak module
-         #  ${nix-flatpak}/
+          #  ${nix-flatpak}/
           nix-flatpak.homeManagerModules.nix-flatpak
         ];
 
