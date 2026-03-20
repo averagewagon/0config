@@ -130,4 +130,23 @@
       init.defaultBranch = "main";
     };
   };
+
+  #JHM Launches the fish shell only in interactive shells
+  # Supposedly, this is AI generated so I kind of don't trust it
+  home.file.".bashrc".text = ''
+    # Only launch fish in interactive shells
+    if [[ $- == *i* ]] && [[ -z "$BASH_EXECUTION_STRING" ]] && [[ -z "$EMACS" ]] && [[ -z "$TMUX" ]]; then
+      if [[ "$(ps -p "$PPID" -o comm=)" != "fish" ]]; then
+        exec fish
+      fi
+    fi
+  '';
+
+  home.file.".bash_profile".text = ''
+    if [ -f ~/.bashrc ]; then
+      . ~/.bashrc
+    fi
+  '';
+
+  programs.fish.enable = true;
 }
