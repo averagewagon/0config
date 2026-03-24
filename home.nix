@@ -22,6 +22,7 @@
   #JHM TODO: Enable vulkan for fixing zed
   # nixGL.vulkan.enable = true;
 
+  #JHM Needed for distrobox to use experimental features
   nix = {
     package = pkgs.nix;
     settings.experimental-features = [
@@ -66,6 +67,15 @@
     #JHM wthings
     distrobox
     gnumake
+    vcstool
+    (python3.withPackages (ps: with ps; [ pyyaml ]))
+    awscli
+    podman
+    podman-compose
+    (pkgs.writeShellScriptBin "docker" ''
+      exec podman "$@"
+    '')
+
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -83,12 +93,17 @@
     # '';
   };
 
+  #JHM Config required to disable SELinux labeling for containers globally
+  # Removes SELinux isolation for my containers, but should also fix some
+  # build perms issues, maybe
+  home.file.".config/containers/containers.conf".text = ''
+    [containers]
+    label = false
+  '';
+
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
   # shell provided by Home Manager.
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
