@@ -1,0 +1,16 @@
+# TODO
+- Zed config and extensions
+- Obsidian config (maybe add .obsidian settings sync?)
+  - date format for daily notes
+  - daily template
+  - ctrl-d for daily note opening
+  - ctrl-m for readable line length toggle
+  - line numbers
+  - turn off "indent using tabs"
+  - folder for new attachments
+- Differential "work mode" vs "home mode" git configs
+- "server-mode" install (no GUI apps)
+- Switch off GitHub (for Codeberg?)
+- Set up server for easy selfhosted deployments? Docker?
+- Gnome config
+-
