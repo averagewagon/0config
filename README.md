@@ -2,6 +2,24 @@
 
 Home Manager configuration for Fedora Silverblue.
 
+## Maintenance
+
+Updating Fedora Silverblue packages:
+```bash
+rpm-ostree upgrade
+systemctl reboot
+```
+
+Updating Nix:
+```bash
+nix flake update ~/0config && home-manager switch --flake ~/0config
+```
+
+Garbage collecting Nix store:
+```bash
+nix-collect-garbage -d
+```
+
 ## Setup
 
 ### 1. Initial setup
