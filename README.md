@@ -129,11 +129,16 @@ ffmpeg -codecs 2>/dev/null | grep -E "h264|aac|hevc"
 ```
 
 ### 6. Miscellaneous
-
 - Set dark mode in GNOME Settings
 - Set default browser to Librewolf
 - Bookmark Flatpak applications in the app launcher
 - Add this machine to the Syncthing config, then re-run `home-manager switch` on other devices.
+
+Note for Lenovo Yoga 7i - apply this to fix audio issues and reboot
+```bash
+echo "options snd-sof-intel-hda-generic hda_model=alc287-yoga9-bass-spk-pin" | sudo tee /etc/modprobe.d/yoga7i-audio.conf
+systemctl reboot
+```
 
 Zed — Settings → Open Settings:
 
