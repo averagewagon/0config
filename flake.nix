@@ -2,19 +2,21 @@
   description = "Home Manager configuration of jhen";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    #JHM Adding my own sources
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs =
-    { nixpkgs, home-manager, nix-flatpak, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      nix-flatpak,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -22,19 +24,10 @@
     {
       homeConfigurations."jhen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
         modules = [
           ./home.nix
-
-          #JHM Adding the nix-flatpak module
-         #  ${nix-flatpak}/
           nix-flatpak.homeManagerModules.nix-flatpak
         ];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
       };
     };
 }
