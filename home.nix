@@ -167,6 +167,11 @@
         appId = "net.ankiweb.Anki";
         origin = "flathub";
       }
+      {
+        # Basic image editing
+        appId = "com.github.PintaProject.Pinta";
+        origin = "flathub";
+      }
     ];
     overrides = {
       # Librewolf needs camera access for video calls
