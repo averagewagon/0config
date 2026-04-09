@@ -12,7 +12,7 @@ systemctl reboot
 
 Updating Nix:
 ```bash
-nix flake update ~/0config && home-manager switch --flake ~/0config
+nix flake update --flake ~/0config && home-manager switch --flake ~/0config
 ```
 
 Garbage collecting Nix store:
