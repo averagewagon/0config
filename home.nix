@@ -42,6 +42,16 @@
     claude-code # Proprietary AI coding agent ;_;
   ];
 
+  # GNOME Extensions
+  programs.gnome-shell = {
+    enable = true;
+    extensions = [
+      { package = pkgs.gnomeExtensions.dash-to-dock; } # Mouseover dock on the bottom of the screen
+      { package = pkgs.gnomeExtensions.clipboard-indicator; } # Clipboard history
+      { package = pkgs.gnomeExtensions.vitals; } # System resource usage
+    ];
+  };
+
   # Configuring GNOME
   dconf = {
     enable = true;
@@ -69,6 +79,23 @@
           "net.ankiweb.Anki.desktop"
           "com.bitwarden.desktop.desktop"
           "md.obsidian.Obsidian.desktop"
+        ];
+      };
+      "org/gnome/shell/extensions/dash-to-dock" = {
+        show-icons-notifications-counter = false;
+        show-dock-urgent-notify = false;
+        dock-fixed = false;
+        autohide = true;
+        intellihide = false;
+      };
+      "org/gnome/shell/extensions/vitals" = {
+        icon-style = 1;
+        show-battery = true;
+        hot-sensors = [
+          "_processor_usage_"
+          "_memory_usage_"
+          "_storage_free_"
+          "__network-rx_max__"
         ];
       };
       "org/gnome/settings-daemon/plugins/color" = {
