@@ -42,6 +42,74 @@
     claude-code # Proprietary AI coding agent ;_;
   ];
 
+  # Configuring GNOME
+  dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        show-battery-percentage = true;
+      };
+      "org/gnome/desktop/privacy" = {
+        report-technical-problems = false;
+      };
+      "org/gnome/system/location" = {
+        enabled = true;
+      };
+      "org/gnome/shell" = {
+        favorite-apps = [
+          "io.gitlab.librewolf-community.desktop"
+          "org.gnome.Nautilus.desktop"
+          "org.gnome.Ptyxis.desktop"
+          "dev.zed.Zed.desktop"
+          "im.fluffychat.Fluffychat.desktop"
+          "org.signal.Signal.desktop"
+          "com.discordapp.Discord.desktop"
+          "com.stremio.Stremio.desktop"
+          "net.ankiweb.Anki.desktop"
+          "com.bitwarden.desktop.desktop"
+          "md.obsidian.Obsidian.desktop"
+        ];
+      };
+      "org/gnome/settings-daemon/plugins/color" = {
+        night-light-enabled = true;
+        night-light-schedule-automatic = false;
+        night-light-schedule-from = 20.0;
+        night-light-schedule-to = 4.0;
+      };
+    };
+  };
+
+  # Configuring default GNOME applications
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      # Librewolf as default browser
+      "text/html" = "io.gitlab.librewolf-community.desktop";
+      "x-scheme-handler/http" = "io.gitlab.librewolf-community.desktop";
+      "x-scheme-handler/https" = "io.gitlab.librewolf-community.desktop";
+      "x-scheme-handler/about" = "io.gitlab.librewolf-community.desktop";
+      "x-scheme-handler/unknown" = "io.gitlab.librewolf-community.desktop";
+      "application/xhtml+xml" = "io.gitlab.librewolf-community.desktop";
+
+      # mpv for video/audio
+      "video/mp4" = "io.mpv.Mpv.desktop";
+      "video/x-matroska" = "io.mpv.Mpv.desktop";
+      "video/webm" = "io.mpv.Mpv.desktop";
+      "audio/mpeg" = "io.mpv.Mpv.desktop";
+      "audio/flac" = "io.mpv.Mpv.desktop";
+      "audio/ogg" = "io.mpv.Mpv.desktop";
+
+      # Foliate for ebooks
+      "application/epub+zip" = "com.github.johnfactotum.Foliate.desktop";
+
+      # Loupe for images
+      "image/png" = "org.gnome.Loupe.desktop";
+      "image/jpeg" = "org.gnome.Loupe.desktop";
+      "image/webp" = "org.gnome.Loupe.desktop";
+    };
+  };
+
   programs.git = {
     enable = true;
     settings = {
