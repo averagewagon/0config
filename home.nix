@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  nixgl,
   ...
 }:
 
@@ -11,6 +12,13 @@
   home.stateVersion = "25.11"; # Don't change without reading HM release notes
 
   programs.home-manager.enable = true;
+
+  targets.genericLinux.nixGL = {
+    packages = nixgl.packages;
+    defaultWrapper = "mesa";
+    installScripts = [ "mesa" ];
+    vulkan.enable = true;
+  };
 
   nix = {
     package = pkgs.nix;
@@ -42,6 +50,46 @@
         email = "contact@joni.site";
       };
       init.defaultBranch = "main";
+    };
+  };
+
+  # GUI text editor
+  programs.zed-editor = {
+    enable = true;
+    package = config.lib.nixGL.wrap pkgs.zed-editor;
+    extensions = [
+      "nix"
+      "catppuccin-icons"
+      "git-firefly"
+    ];
+    userSettings = {
+      agent = {
+        use_modifier_to_send = false;
+        play_sound_when_agent_done = true;
+      };
+      collaboration_panel = {
+        button = false;
+      };
+      agent_servers = {
+        claude-acp = {
+          type = "registry";
+        };
+      };
+      extend_comment_on_newline = false;
+      icon_theme = "Catppuccin Frappé";
+      theme = "Gruvbox Dark Hard";
+      buffer_font_features = {
+        calt = false;
+      };
+      lsp = {
+        rust-analyzer = {
+          initialization_options = {
+            cargo = {
+              features = "all";
+            };
+          };
+        };
+      };
     };
   };
 
@@ -120,11 +168,6 @@
       {
         # Notes app - proprietary ;_;
         appId = "md.obsidian.Obsidian";
-        origin = "flathub";
-      }
-      {
-        # GUI text editor
-        appId = "dev.zed.Zed";
         origin = "flathub";
       }
       {

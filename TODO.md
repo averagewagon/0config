@@ -1,5 +1,4 @@
 # TODO
-- Zed config and extensions
 - Obsidian config (maybe add .obsidian settings sync?)
   - date format for daily notes
   - daily template

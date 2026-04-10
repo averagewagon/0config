@@ -139,37 +139,3 @@ Note for Lenovo Yoga 7i - apply this to fix audio issues and reboot
 echo "options snd-sof-intel-hda-generic hda_model=alc287-yoga9-bass-spk-pin" | sudo tee /etc/modprobe.d/yoga7i-audio.conf
 systemctl reboot
 ```
-
-Zed — Settings → Open Settings:
-
-```json
-{
-  "agent": {
-    "use_modifier_to_send": false,
-    "play_sound_when_agent_done": true
-  },
-  "collaboration_panel": {
-    "button": false
-  },
-  "agent_servers": {
-    "claude-acp": {
-      "type": "registry"
-    }
-  },
-  "extend_comment_on_newline": false,
-  "icon_theme": "Catppuccin Frappé",
-  "theme": "Gruvbox Dark Hard",
-  "buffer_font_features": {
-    "calt": false
-  },
-  "lsp": {
-    "rust-analyzer": {
-      "initialization_options": {
-        "cargo": {
-          "features": "all"
-        }
-      }
-    }
-  }
-}
-```
