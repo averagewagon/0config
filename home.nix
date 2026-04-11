@@ -91,9 +91,11 @@
       "org/gnome/shell/extensions/vitals" = {
         icon-style = 1;
         show-battery = true;
+        storage-path = "/var/home";
         hot-sensors = [
           "_processor_usage_"
           "_memory_usage_"
+          "_storage_used_"
           "__network-rx_max__"
         ];
       };

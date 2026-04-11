@@ -11,6 +11,4 @@
 - "server-mode" install (no GUI apps)
 - Switch off GitHub (for Codeberg?)
 - Set up server for easy selfhosted deployments? Docker?
-- Gnome config
-  - Maybe dash-to-dock because I miss mousing the bottom of my screen
 - RSS feed reader which syncs between phone and computer
