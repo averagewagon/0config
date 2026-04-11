@@ -56,6 +56,11 @@
   dconf = {
     enable = true;
     settings = {
+      "org/gnome/desktop/background" = {
+        picture-uri = "file:///var/home/jhen/0everything/0media/images/backgrounds/space-background-contrast.png";
+        picture-uri-dark = "file:///var/home/jhen/0everything/0media/images/backgrounds/space-background-contrast.png";
+        picture-options = "zoom";
+      };
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         show-battery-percentage = true;

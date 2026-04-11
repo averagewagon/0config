@@ -129,10 +129,13 @@ ffmpeg -codecs 2>/dev/null | grep -E "h264|aac|hevc"
 ```
 
 ### 6. Miscellaneous
-- Set dark mode in GNOME Settings
-- Set default browser to Librewolf
-- Bookmark Flatpak applications in the app launcher
 - Add this machine to the Syncthing config, then re-run `home-manager switch` on other devices.
+
+Set profile picture:
+```bash
+sudo cp /var/home/jhen/0everything/0media/images/profile-pics/cartoonwagon.jpg /var/lib/AccountsService/icons/jhen
+sudo systemctl restart accounts-daemon
+```
 
 Note for Lenovo Yoga 7i - apply this to fix audio issues and reboot
 ```bash
