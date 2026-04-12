@@ -1,6 +1,6 @@
 # 0config
 
-Home Manager configuration for Fedora Silverblue.
+Home Manager configuration for my machines.
 
 ## Activation
 
@@ -17,6 +17,16 @@ Updating Fedora Silverblue packages:
 ```bash
 rpm-ostree upgrade
 systemctl reboot
+```
+
+Updating Fedora packages:
+```bash
+sudo dnf upgrade
+```
+
+Updating Debian packages:
+```bash
+sudo apt update && sudo apt upgrade
 ```
 
 Updating Nix (run switch command after):
