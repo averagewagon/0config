@@ -5,8 +5,8 @@
 }:
 
 {
-  home.username = "jhen";
-  home.homeDirectory = "/var/home/jhen";
+  home.username = lib.mkDefault "jhen";
+  home.homeDirectory = lib.mkDefault "/var/home/jhen";
   home.stateVersion = "25.11"; # Don't change without reading HM release notes
 
   programs.home-manager.enable = true;
@@ -37,8 +37,8 @@
     enable = true;
     settings = {
       user = {
-        name = "Joni Hendrickson";
-        email = "contact@joni.site";
+        name = lib.mkDefault "Joni Hendrickson";
+        email = lib.mkDefault "contact@joni.site";
       };
       init.defaultBranch = "main";
     };

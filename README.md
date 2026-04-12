@@ -2,6 +2,17 @@
 
 Home Manager configuration for Fedora Silverblue.
 
+## Activation
+
+```bash
+# personal machine
+home-manager switch --flake ~/0config#desktop
+# work machine
+home-manager switch --flake ~/0config#work
+# headless (no GUI)
+home-manager switch --flake ~/0config#server
+```
+
 ## Maintenance
 
 Updating Fedora Silverblue packages:
@@ -20,7 +31,7 @@ Garbage collecting Nix store:
 nix-collect-garbage -d
 ```
 
-## Setup
+## One-Time Setup
 
 ### 1. Initial setup
 Connect to WiFi.
