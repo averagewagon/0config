@@ -33,6 +33,11 @@
     claude-code # Proprietary AI coding agent ;_;
   ];
 
+  programs.keychain = {
+    enable = true;
+    keys = [ "personal_key" ];
+  };
+
   programs.git = {
     enable = true;
     settings = {
