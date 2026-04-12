@@ -30,6 +30,7 @@
     micro # Lightweight text editor
     nil # Nix language server
     nixd # Nix language server
+    bat # cat with highlighting
     claude-code # Proprietary AI coding agent ;_;
   ];
 
@@ -55,6 +56,15 @@
     interactiveShellInit = ''
       fish_config theme choose base16-default
       fish_config prompt choose default
+      # Colorful man pages in less
+      set -gx GROFF_NO_SGR 1
+      set -gx LESS_TERMCAP_mb (set_color -o red)
+      set -gx LESS_TERMCAP_md (set_color -o cyan)
+      set -gx LESS_TERMCAP_me (set_color normal)
+      set -gx LESS_TERMCAP_se (set_color normal)
+      set -gx LESS_TERMCAP_so (set_color -b white black)
+      set -gx LESS_TERMCAP_ue (set_color normal)
+      set -gx LESS_TERMCAP_us (set_color -o green)
     '';
   };
 
