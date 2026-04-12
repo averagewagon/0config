@@ -23,37 +23,52 @@
       ...
     }:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-    let
       mkHome =
-        modules:
+        {
+          system ? "x86_64-linux",
+          modules,
+        }:
         home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+          pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = { inherit nixgl; };
           inherit modules;
         };
     in
     {
       homeConfigurations = {
-        "desktop" = mkHome [
-          ./modules/base.nix
-          ./modules/syncthing.nix
-          ./modules/graphical.nix
-          ./modules/personal.nix
-          nix-flatpak.homeManagerModules.nix-flatpak
-        ];
-        "work" = mkHome [
-          ./modules/base.nix
-          ./modules/graphical.nix
-          ./modules/work.nix
-          nix-flatpak.homeManagerModules.nix-flatpak
-        ];
-        "server" = mkHome [
-          ./modules/base.nix
-          ./modules/syncthing.nix
-        ];
+        "desktop" = mkHome {
+          modules = [
+            ./modules/base.nix
+            ./modules/syncthing.nix
+            ./modules/graphical.nix
+            ./modules/personal.nix
+            nix-flatpak.homeManagerModules.nix-flatpak
+          ];
+        };
+        "work" = mkHome {
+          modules = [
+            ./modules/base.nix
+            ./modules/graphical.nix
+            ./modules/work.nix
+            nix-flatpak.homeManagerModules.nix-flatpak
+          ];
+        };
+        "server" = mkHome {
+          modules = [
+            ./modules/base.nix
+            ./modules/syncthing.nix
+          ];
+        };
+        "phone" = mkHome {
+          system = "aarch64-linux";
+          modules = [
+            ./modules/base.nix
+            {
+              home.username = "droid";
+              home.homeDirectory = "/home/droid";
+            }
+          ];
+        };
       };
     };
 }
