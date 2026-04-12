@@ -10,18 +10,29 @@ Steps to set up 0config on a GrapheneOS phone using the Android Terminal (Linux 
 4. Open the new Terminal app - it will download and install a ~565MB Debian VM
 5. Once booted, you're logged in as `droid@debian`
 
-## 2. Install Nix
+## 2. Clone 0config
+
+```bash
+sudo apt install git
+git clone https://github.com/averagewagon/0config.git ~/0config
+```
+
+## 3. Fix DNS (if needed)
+
+If downloads time out, the VM's DNS may not be configured:
+```bash
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+```
+
+## 4. Install Nix
 
 ```bash
 curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
 ```
 
-Restart the terminal, then clone 0config:
-```bash
-git clone https://github.com/averagewagon/0config.git ~/0config
-```
+Restart the terminal.
 
-## 3. Activate Home Manager
+## 5. Activate Home Manager
 
 ```bash
 nix-shell -p home-manager
