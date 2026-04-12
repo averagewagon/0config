@@ -10,17 +10,13 @@ Steps to set up 0config on a GrapheneOS phone using the Android Terminal (Linux 
 4. Open the new Terminal app - it will download and install a ~565MB Debian VM
 5. Once booted, you're logged in as `droid@debian`
 
-## 2. Set up sudo
+## 2. Set passwords and sudoer
 
-The VM doesn't configure sudo by default. Set a root password and add `droid` to sudoers:
 ```bash
-su -
-passwd root
-usermod -aG sudo droid
-exit
+passwd
+sudo passwd root
+sudo usermod -aG sudo droid
 ```
-
-Log out and back in (close and reopen the terminal).
 
 ## 3. Clone 0config
 
@@ -48,7 +44,14 @@ Restart the terminal.
 
 ```bash
 nix-shell -p home-manager
-home-manager switch --flake ~/0config#phone
+home-manager switch --flake ~/0config#phone -b backup
+```
+
+## 7. Tailscale
+
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
 ```
 
 ## Notes
