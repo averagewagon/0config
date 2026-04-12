@@ -37,7 +37,13 @@
       homeConfigurations = {
         "desktop" = mkHome [
           ./modules/graphical.nix
+          ./modules/personal.nix
           ./modules/syncthing.nix
+          nix-flatpak.homeManagerModules.nix-flatpak
+        ];
+        "work" = mkHome [
+          ./modules/graphical.nix
+          ./modules/work.nix
           nix-flatpak.homeManagerModules.nix-flatpak
         ];
         "server" = mkHome [

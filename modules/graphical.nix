@@ -83,21 +83,7 @@
       "org/gnome/system/location" = {
         enabled = true;
       };
-      "org/gnome/shell" = {
-        favorite-apps = [
-          "io.gitlab.librewolf-community.desktop"
-          "org.gnome.Nautilus.desktop"
-          "org.gnome.Ptyxis.desktop"
-          "dev.zed.Zed.desktop"
-          "im.fluffychat.Fluffychat.desktop"
-          "org.signal.Signal.desktop"
-          "com.discordapp.Discord.desktop"
-          "com.stremio.Stremio.desktop"
-          "net.ankiweb.Anki.desktop"
-          "com.bitwarden.desktop.desktop"
-          "md.obsidian.Obsidian.desktop"
-        ];
-      };
+      # favorite-apps is set per-profile (personal.nix, work.nix)
       "org/gnome/shell/extensions/dash-to-dock" = {
         show-icons-notifications-counter = false;
         show-dock-urgent-notify = false;
@@ -184,21 +170,6 @@
         origin = "flathub";
       }
       {
-        # Chat app - Matrix client
-        appId = "im.fluffychat.Fluffychat";
-        origin = "flathub";
-      }
-      {
-        # Chat app - Signal desktop
-        appId = "org.signal.Signal";
-        origin = "flathub";
-      }
-      {
-        # Chat app - proprietary ;_;
-        appId = "com.discordapp.Discord";
-        origin = "flathub";
-      }
-      {
         # Pleasant e-reader
         appId = "com.github.johnfactotum.Foliate";
         origin = "flathub";
@@ -209,18 +180,8 @@
         origin = "flathub";
       }
       {
-        # Streaming service aggregator
-        appId = "com.stremio.Stremio";
-        origin = "flathub";
-      }
-      {
         # Video player
         appId = "io.mpv.Mpv";
-        origin = "flathub";
-      }
-      {
-        # Flashcards
-        appId = "net.ankiweb.Anki";
         origin = "flathub";
       }
       {
@@ -232,8 +193,6 @@
     overrides = {
       # Librewolf needs camera access for video calls
       "io.gitlab.librewolf-community".Context.devices = [ "all" ];
-      # Use GNOME keyring instead of plaintext password store
-      "org.signal.Signal".Environment.SIGNAL_PASSWORD_STORE = "gnome-libsecret";
     };
   };
 }
