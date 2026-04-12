@@ -14,7 +14,16 @@ rpm-ostree upgrade
 systemctl reboot
 ```
 
-## 2. Install Nix and 0config
+## 2. SSH keys
+
+```bash
+ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
+cat ~/.ssh/personal_key.pub
+```
+
+Upload the public key to [github.com/settings/keys](https://github.com/settings/keys).
+
+## 3. Install Nix and 0config
 
 Needed for Nix to work on Silverblue.
 - [Nix install guide on Silverblue](https://gist.github.com/queeup/1666bc0a5558464817494037d612f094)
@@ -38,10 +47,10 @@ Using the [nix-installer](https://github.com/NixOS/nix-installer).
 curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
 ```
 
-Restart the shell, then set up home-manager with 0config
+Restart the shell, then clone and activate 0config:
 ```bash
 cd ~
-git clone https://github.com/averagewagon/0config
+git clone git@github.com:averagewagon/0config.git
 nix-shell -p home-manager
 home-manager switch --flake ~/0config#laptop -b backup
 ```
@@ -50,7 +59,7 @@ Flatpak apps (including Librewolf) and Syncthing are now installed and running.
 - Librewolf - disable fingerprinting protections, turn on dark mode and sync, log in to sync
 - Syncthing - accept new connection on other devices
 
-## 3. Tailscale + RPM Fusion
+## 4. Tailscale + RPM Fusion
 
 Install Tailscale (networking) and RPM Fusion (proprietary Fedora packages) together to save a reboot.
 
@@ -70,21 +79,6 @@ sudo tailscale up
 Add machine to Mullvad users on Tailscale, if desired. Optionally, enable ssh:
 ```bash
 sudo tailscale up --ssh
-```
-
-## 4. SSH keys
-
-```bash
-ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
-cat ~/.ssh/personal_key.pub
-```
-
-Upload the public key to [github.com/settings/keys](https://github.com/settings/keys).
-
-Switch the remote for 0config itself:
-```bash
-cd ~/0config
-git remote set-url origin git@github.com:averagewagon/0config.git
 ```
 
 ## 5. Codecs
@@ -108,8 +102,13 @@ vainfo
 ffmpeg -codecs 2>/dev/null | grep -E "h264|aac|hevc"
 ```
 
-## 6. Miscellaneous
-- Add this machine to the Syncthing config, then re-run `home-manager switch` on other devices.
+## 6. Syncthing
+
+Open the Syncthing UI at `http://localhost:8384` and copy the new laptop's device ID. Add it to `syncthing.nix`, then re-run `home-manager switch` on all machines. Accept the new device on phone.
+
+Wait for 0everything to sync.
+
+## 7. Miscellaneous
 
 Set profile picture:
 ```bash
