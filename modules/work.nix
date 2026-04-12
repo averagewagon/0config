@@ -20,7 +20,6 @@
   ];
 
   # Disable SELinux labeling for containers globally
-  # Disable SELinux labeling for containers globally
   home.file.".config/containers/containers.conf".text = ''
     [containers]
     label = false

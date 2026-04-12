@@ -10,5 +10,4 @@
 - Switch off GitHub (for Codeberg?)
 - Set up server for easy selfhosted deployments? Docker?
 - RSS feed reader which syncs between phone and computer
-- Impermanence
 - Get helper scripts set up
