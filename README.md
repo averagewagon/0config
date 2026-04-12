@@ -6,9 +6,9 @@ Home Manager configuration for Fedora Silverblue.
 
 ```bash
 home-manager switch --flake ~/0config#laptop
-home-manager switch --flake ~/0config#work
 home-manager switch --flake ~/0config#server
 home-manager switch --flake ~/0config#phone
+home-manager switch --flake ~/0config#work
 ```
 
 ## Maintenance
