@@ -14,6 +14,14 @@
     vulkan.enable = true;
   };
 
+  # Consistent cursor across GTK and Qt apps on Wayland
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+  };
+
   # Qt app theming - use Adwaita Dark to match GNOME dark mode
   qt = {
     enable = true;
@@ -22,7 +30,8 @@
   };
 
   home.packages = with pkgs; [
-    adwaita-qt # Adwaita theme for Qt apps
+    adwaita-qt # Adwaita theme for Qt5 apps
+    adwaita-qt6 # Adwaita theme for Qt6 apps
   ];
 
   # GUI text editor
