@@ -6,10 +6,12 @@
 {
   programs.git.settings.user.email = "jonathan.hendrickson@bonsairobotics.ai";
 
+  allowedUnfreePackages = [ "foxglove-studio" ];
+
   home.packages = with pkgs; [
     distrobox
     gnumake
-    vcstool
+    vcs2l
     (python3.withPackages (ps: with ps; [ pyyaml ]))
     awscli
     podman
@@ -17,6 +19,8 @@
     (pkgs.writeShellScriptBin "docker" ''
       exec podman "$@"
     '')
+    foxglove-studio
+    pixi
   ];
 
   # Disable SELinux labeling for containers globally
