@@ -6,13 +6,24 @@
 }:
 
 {
-  # Needed to wrap anything GPU-accelerated, e.g. Zed
+  # Needed to wrap anything GPU-accelerated, e.g. Zed, Subsurface
   targets.genericLinux.nixGL = {
     packages = nixgl.packages;
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
     vulkan.enable = true;
   };
+
+  # Qt app theming - use Adwaita Dark to match GNOME dark mode
+  qt = {
+    enable = true;
+    platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
+  };
+
+  home.packages = with pkgs; [
+    adwaita-qt # Adwaita theme for Qt apps
+  ];
 
   # GUI text editor
   programs.zed-editor = {

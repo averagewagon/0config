@@ -1,8 +1,14 @@
 {
+  config,
+  pkgs,
   ...
 }:
 
 {
+  home.packages = with pkgs; [
+    (config.lib.nixGL.wrap subsurface) # Dive log software
+  ];
+
   dconf.settings."org/gnome/shell" = {
     favorite-apps = [
       "io.gitlab.librewolf-community.desktop"
