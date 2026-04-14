@@ -24,21 +24,10 @@
     nixpkgs.config.allowUnfreePredicate =
       pkg: builtins.elem (lib.getName pkg) config.allowedUnfreePackages;
 
-    # Actually declare the allowlist of unfree packages
-    allowedUnfreePackages = [ "claude-code" ];
-
     home.packages = with pkgs; [
       micro # Lightweight text editor
-      nil # Nix language server
-      nixd # Nix language server
       bat # cat with highlighting
-      claude-code # Proprietary AI coding agent ;_;
     ];
-
-    programs.keychain = {
-      enable = true;
-      keys = [ "personal_key" ];
-    };
 
     programs.git = {
       enable = true;
