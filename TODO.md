@@ -8,6 +8,6 @@
   - turn off "indent using tabs"
   - folder for new attachments
 - Switch off GitHub (for Codeberg?)
-- Set up server for easy selfhosted deployments? Docker?
 - RSS feed reader which syncs between phone and computer
 - Get helper scripts set up
+- Use some sort of CLI for server provisioning so I can fully automate things

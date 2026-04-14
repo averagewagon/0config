@@ -39,6 +39,7 @@
         "laptop" = mkHome {
           modules = [
             ./modules/base.nix
+            ./modules/dev.nix
             ./modules/syncthing.nix
             ./modules/graphical.nix
             ./modules/personal.nix
@@ -48,6 +49,7 @@
         "work" = mkHome {
           modules = [
             ./modules/base.nix
+            ./modules/dev.nix
             ./modules/graphical.nix
             ./modules/work.nix
             nix-flatpak.homeManagerModules.nix-flatpak
@@ -56,6 +58,7 @@
         "server" = mkHome {
           modules = [
             ./modules/base.nix
+            ./modules/dev.nix
             ./modules/syncthing.nix
             { home.homeDirectory = "/home/jhen"; }
           ];
@@ -64,6 +67,7 @@
           system = "aarch64-linux";
           modules = [
             ./modules/base.nix
+            ./modules/dev.nix
             {
               home.username = "droid";
               home.homeDirectory = "/home/droid";
