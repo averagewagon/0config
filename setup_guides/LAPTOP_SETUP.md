@@ -108,7 +108,28 @@ Open the Syncthing UI at `http://localhost:8384` and copy the new laptop's devic
 
 Wait for 0everything to sync.
 
-## 7. Miscellaneous
+## 7. Zram
+
+Fedora caps zram at 8GB by default (`zram-size = min(ram / 2, 8192)`). Override it in `/etc` — no `rpm-ostree` needed since `/etc` is writable on Silverblue:
+
+```bash
+printf '[zram0]\nzram-size = ram / 2\n' | sudo tee /etc/systemd/zram-generator.conf
+```
+
+`ram / 2` gives 16GB on a 32GB machine. You can go higher (e.g. `ram`) since zram compresses data.
+
+Apply without rebooting:
+```bash
+sudo modprobe zram
+sudo systemctl restart systemd-zram-setup@zram0.service
+```
+
+Verify:
+```bash
+zramctl
+```
+
+## 8. Miscellaneous
 
 Set profile picture:
 ```bash
