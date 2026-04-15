@@ -33,12 +33,22 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
+    matchBlocks."github.com" = {
+      identityFile = "~/.ssh/id_ed25519";
+      identitiesOnly = true;
+    };
     matchBlocks."github-personal" = {
       hostname = "github.com";
       identityFile = "~/.ssh/personal_key";
       identitiesOnly = true;
     };
   };
+
+  # Docker build mounts ~/.gitconfig but Home Manager writes to ~/.config/git/config
+  home.file.".gitconfig".text = ''
+    [include]
+      path = ~/.config/git/config
+  '';
 
   # Use personal git identity for 0config repo even on work machine
   home.file.".config/git/config-0config".text = ''
