@@ -20,6 +20,7 @@
       "com.discordapp.Discord.desktop"
       "com.stremio.Stremio.desktop"
       "net.ankiweb.Anki.desktop"
+      "subsurface.desktop"
       "com.bitwarden.desktop.desktop"
       "md.obsidian.Obsidian.desktop"
     ];
