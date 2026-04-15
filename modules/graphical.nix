@@ -42,6 +42,9 @@
       "nix"
       "catppuccin-icons"
       "git-firefly"
+      "TOML"
+      "Dockerfile"
+      "xml"
     ];
     userSettings = {
       agent = {
