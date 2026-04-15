@@ -22,9 +22,9 @@
         | sort | uniq -c | sort -nr | head -20
     '')
     (writeShellScriptBin ",git-contributors" ''
-      echo "Contributors ranked by commit count."
+      echo "Contributors ranked by commit count. Optional: pass a time period to filter, e.g. '6 months ago'."
       echo ""
-      git shortlog -sn --no-merges
+      git shortlog -sn --no-merges ''${1:+--since="$1"}
     '')
     (writeShellScriptBin ",git-bugs" ''
       echo "Top 20 files most associated with bug-fix commits. Optional: pass a string to filter by path."
@@ -35,14 +35,14 @@
         | sort | uniq -c | sort -nr | head -20
     '')
     (writeShellScriptBin ",git-velocity" ''
-      echo "Commit count by month over the full repo history."
+      echo "Commit count by month. Optional: pass a time period to limit history, e.g. '2 years ago'."
       echo ""
-      git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
+      git log ''${1:+--since="$1"} --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
     '')
     (writeShellScriptBin ",git-firefights" ''
-      echo "Reverts, hotfixes, and rollbacks in the last year."
+      echo "Reverts, hotfixes, and rollbacks. Optional: pass a time period, e.g. '6 months ago' (default: 1 year)."
       echo ""
-      git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'
+      git log --oneline --since="''${1:-1 year ago}" | grep -iE 'revert|hotfix|emergency|rollback'
     '')
   ];
 
