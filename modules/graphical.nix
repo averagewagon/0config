@@ -74,6 +74,32 @@
           };
         };
       };
+      languages =
+        let
+          prettierFormatter = {
+            format_on_save = "on";
+            formatter = {
+              external = {
+                command = "prettier";
+                arguments = [
+                  "--stdin-filepath"
+                  "{buffer_path}"
+                ];
+              };
+            };
+          };
+        in
+        {
+          Markdown = prettierFormatter;
+          JSON = prettierFormatter;
+          YAML = prettierFormatter;
+          CSS = prettierFormatter;
+          SCSS = prettierFormatter;
+          HTML = prettierFormatter;
+          JavaScript = prettierFormatter;
+          TypeScript = prettierFormatter;
+          TSX = prettierFormatter;
+        };
     };
   };
 
