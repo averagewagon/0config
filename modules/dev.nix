@@ -10,6 +10,7 @@
     nil # Nix language server
     nixd # Nix language server
     claude-code # Proprietary AI coding agent ;_;
+    prettier # Markdown/JSON/YAML/etc formatter
 
     # Git diagnostic aliases (credit: Ally Piechowski)
     # https://piechowski.io/post/git-commands-before-reading-code/
@@ -53,6 +54,12 @@
       git log --oneline --since="''${1:-1 year ago}" | grep -iE 'revert|hotfix|emergency|rollback'
     '')
   ];
+
+  # Global prettier config — used as fallback when a project has no .prettierrc
+  home.file.".prettierrc.yaml".text = ''
+    proseWrap: always
+    printWidth: 100
+  '';
 
   programs.keychain = {
     enable = true;
