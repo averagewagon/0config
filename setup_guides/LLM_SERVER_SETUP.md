@@ -66,7 +66,18 @@ home-manager switch --flake ~/0config#llmServer
 
 ## 6. Install Ollama
 
-The official install script handles CUDA detection automatically:
+The install script uses `lspci` to detect the GPU; install it first so CUDA
+support gets pulled in correctly:
+```bash
+sudo apt-get install -y pciutils
+```
+
+Verify `lspci` shows your GPU:
+```bash
+lspci | grep -i nvidia
+```
+
+Then install Ollama (the script handles CUDA detection automatically):
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
@@ -78,34 +89,46 @@ llm-start
 
 To stop them later: `llm-stop`
 
-## 7. Pull a model and verify
+## 7. Verify everything is working
 
+Check both services respond locally:
+```bash
+curl http://localhost:11434     # → "Ollama is running"
+curl -I http://localhost:8080   # → HTTP/1.1 200 OK
+```
+
+Pull a small model as a quick sanity check:
+```bash
+ollama pull qwen3:4b
+ollama run qwen3:4b "Write a haiku about GPUs."
+```
+
+While it's generating, in another terminal run `nvidia-smi` to confirm the GPU is doing work.
+
+Check it's reachable over Tailscale from your laptop:
+```bash
+curl http://<hostname>:11434
+curl -I http://<hostname>:8080
+```
+
+Finally, open `http://<hostname>:8080` in a browser. Open WebUI asks for a name, email, and password on first visit — this is a **local account** stored in the pod's SQLite database, not a cloud signup. Whatever you enter stays on the server. The first account you create is the admin.
+
+## 8. Pull the main model
+
+Once validation is done, pull whatever model you actually want to use:
 ```bash
 ollama pull qwen3.6:35b-a3b
 ```
 
-If the model name isn't available yet in Ollama's library, check `ollama list` for available Qwen models, or try `qwen3-coder:30b` as a fallback.
+If the tag isn't in Ollama's library yet, check `ollama list` or try alternatives like `qwen3-coder:30b`.
 
-Test locally:
-```bash
-curl http://localhost:11434
-# Should print: Ollama is running
-```
-
-Test from your laptop (with Tailscale connected):
-```bash
-curl http://<hostname>:11434
-```
-
-Open `http://<hostname>:8080` in a browser — you should see the Open WebUI login page. The first account you create is the admin.
-
-## 8. Client setup
+## 9. Client setup
 
 **Zed (laptop):** If `llm-client.nix` is in your laptop's Home Manager config, just run `home-manager switch` on the laptop. The Ollama model will appear in Zed's model picker. Update the hostname in `llm-client.nix` if your server has a different Tailscale name.
 
 **Android (Maid):** Install Maid from F-Droid. Go to Settings, choose Ollama as the backend, and set the server URL to `http://<hostname>:11434`.
 
-## 9. Shutting down
+## 10. Shutting down
 
 **Stop the pod** from the RunPod dashboard when you're done. Billing stops immediately. The volume disk (with your models) persists.
 
