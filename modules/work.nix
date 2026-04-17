@@ -23,6 +23,7 @@
     pixi
     gh
     graphviz # Visualizing `dot` graphs
+    jira-cli-go # Jira CLI
   ];
 
   # Disable SELinux labeling for containers globally
