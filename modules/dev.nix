@@ -55,12 +55,6 @@
     '')
   ];
 
-  # Global prettier config — used as fallback when a project has no .prettierrc
-  home.file.".prettierrc.yaml".text = ''
-    proseWrap: always
-    printWidth: 100
-  '';
-
   programs.keychain = {
     enable = true;
     keys = [ "personal_key" ];
