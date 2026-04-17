@@ -8,6 +8,8 @@
 
   home.packages = with pkgs; [
     open-webui
+    tailscale
+    pciutils # provides lspci, needed by Ollama's install script for GPU detection
 
     # Wrapper scripts for starting services in containers without systemd.
     # Ollama itself is installed via the official install script (see
