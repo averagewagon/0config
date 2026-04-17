@@ -11,6 +11,7 @@
     nixd # Nix language server
     claude-code # Proprietary AI coding agent ;_;
     prettier # Markdown/JSON/YAML/etc formatter
+    htop # View running processes
 
     # Git diagnostic aliases (credit: Ally Piechowski)
     # https://piechowski.io/post/git-commands-before-reading-code/
