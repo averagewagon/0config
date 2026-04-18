@@ -15,5 +15,5 @@ Use a strong password from Bitwarden (personal vault). Upload the public key to 
 The `github-personal` SSH host is configured by `work.nix` to route through `~/.ssh/personal_key`.
 
 ```bash
-git clone git@github-personal:averagewagon/0config.git ~/0config
+git clone git@github-personal:hello-joni/0config.git ~/0config
 ```

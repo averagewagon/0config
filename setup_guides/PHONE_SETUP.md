@@ -22,7 +22,7 @@ sudo usermod -aG sudo droid
 
 ```bash
 sudo apt install git
-git clone https://github.com/averagewagon/0config.git ~/0config
+git clone https://github.com/hello-joni/0config.git ~/0config
 ```
 
 ## 4. Fix DNS (if needed)

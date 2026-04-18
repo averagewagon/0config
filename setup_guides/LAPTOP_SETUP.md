@@ -3,11 +3,13 @@
 Steps to set up a personal Fedora Silverblue laptop with 0config.
 
 ## 1. Initial setup
+
 Connect to WiFi.
 
 Use the Software application to apply any system updates.
 
 Set up hostname and update any packages, then reboot.
+
 ```bash
 hostnamectl set-hostname <name>
 rpm-ostree upgrade
@@ -26,6 +28,7 @@ Upload the public key to [github.com/settings/keys](https://github.com/settings/
 ## 3. Install Nix and 0config
 
 Needed for Nix to work on Silverblue.
+
 - [Nix install guide on Silverblue](https://gist.github.com/queeup/1666bc0a5558464817494037d612f094)
 - [transient root docs](https://ostreedev.github.io/ostree/man/ostree-prepare-root.html)
 
@@ -48,14 +51,17 @@ curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
 ```
 
 Restart the shell, then clone and activate 0config:
+
 ```bash
 cd ~
-git clone git@github.com:averagewagon/0config.git
+
+git clone https://github.com/hello-joni/0config.git
 nix-shell -p home-manager
 home-manager switch --flake ~/0config#laptop -b backup
 ```
 
 Flatpak apps (including Librewolf) and Syncthing are now installed and running.
+
 - Librewolf - disable fingerprinting protections, turn on dark mode and sync, log in to sync
 - Syncthing - accept new connection on other devices
 
@@ -71,12 +77,14 @@ systemctl reboot
 ```
 
 Post-reboot, log in to Tailscale:
+
 ```bash
 sudo systemctl enable --now tailscaled
 sudo tailscale up
 ```
 
 Add machine to Mullvad users on Tailscale, if desired. Optionally, enable ssh:
+
 ```bash
 sudo tailscale up --ssh
 ```
@@ -119,12 +127,14 @@ printf '[zram0]\nzram-size = ram / 2\n' | sudo tee /etc/systemd/zram-generator.c
 `ram / 2` gives 16GB on a 32GB machine. You can go higher (e.g. `ram`) since zram compresses data.
 
 Apply without rebooting:
+
 ```bash
 sudo modprobe zram
 sudo systemctl restart systemd-zram-setup@zram0.service
 ```
 
 Verify:
+
 ```bash
 zramctl
 ```
@@ -132,12 +142,14 @@ zramctl
 ## 8. Miscellaneous
 
 Set profile picture:
+
 ```bash
 sudo cp /var/home/jhen/0everything/0media/images/profile-pics/cartoonwagon.jpg /var/lib/AccountsService/icons/jhen
 sudo systemctl restart accounts-daemon
 ```
 
 Note for Lenovo Yoga 7i - apply this to fix audio issues and reboot
+
 ```bash
 echo "options snd-sof-intel-hda-generic hda_model=alc287-yoga9-bass-spk-pin" | sudo tee /etc/modprobe.d/yoga7i-audio.conf
 systemctl reboot
