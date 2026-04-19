@@ -16,16 +16,7 @@ rpm-ostree upgrade
 systemctl reboot
 ```
 
-## 2. SSH keys
-
-```bash
-ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
-cat ~/.ssh/personal_key.pub
-```
-
-Upload the public key to [github.com/settings/keys](https://github.com/settings/keys).
-
-## 3. Install Nix and 0config
+## 2. Install Nix and 0config
 
 Needed for Nix to work on Silverblue.
 
@@ -64,6 +55,19 @@ Flatpak apps (including Librewolf) and Syncthing are now installed and running.
 
 - Librewolf - disable fingerprinting protections, turn on dark mode and sync, log in to sync
 - Syncthing - accept new connection on other devices
+
+## 3. SSH keys
+
+Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)), then load it and clone 0config:
+
+```bash
+# Create a new BW login: ssh/<hostname>_personal_key
+# Generate a password in Bitwarden for the new key
+ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
+ssh-add -t 8h ~/.ssh/personal_key
+# store in BW item; upload to github.com/settings/keys
+cat ~/.ssh/personal_key.pub
+```
 
 ## 4. Tailscale + RPM Fusion
 

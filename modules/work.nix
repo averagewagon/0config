@@ -9,6 +9,7 @@
   allowedUnfreePackages = [ "foxglove-studio" ];
 
   home.packages = with pkgs; [
+    bitwarden-cli
     distrobox
     gnumake
     vcs2l

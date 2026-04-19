@@ -38,20 +38,17 @@ Reconnect to the droplet using Tailscale MagicDNS
 ssh <hostname>
 ```
 
-Generate SSH key for GitHub (password from Bitwarden):
+Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)), then load it and clone 0config:
 
 ```bash
+# Create a new BW login: ssh/<hostname>_personal_key
+# Generate a password in Bitwarden for the new key
 ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
-cat ~/.ssh/personal_key.pub
-```
-
-Upload the public key to [github.com/settings/keys](https://github.com/settings/keys).
-
-Start SSH agent and clone 0config:
-
-```bash
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/personal_key
+# Adding the key to the ssh-agent for 8 hours
+ssh-add -t 8h ~/.ssh/personal_key
+# store in BW item; upload to github.com/settings/keys
+cat ~/.ssh/personal_key.pub
 git clone git@github.com:hello-joni/0config.git
 ```
 
