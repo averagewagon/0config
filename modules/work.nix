@@ -6,8 +6,6 @@
 {
   programs.git.settings.user.email = "jonathan.hendrickson@bonsairobotics.ai";
 
-  allowedUnfreePackages = [ "foxglove-studio" ];
-
   home.packages = with pkgs; [
     bitwarden-cli
     distrobox
@@ -20,7 +18,6 @@
     (pkgs.writeShellScriptBin "docker" ''
       exec podman "$@"
     '')
-    foxglove-studio
     pixi
     gh
     graphviz # Visualizing `dot` graphs
