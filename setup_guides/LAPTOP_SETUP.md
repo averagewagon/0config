@@ -95,24 +95,10 @@ sudo tailscale up --ssh
 
 ## 5. Codecs
 
-Replaces Fedora's patent-clean `ffmpeg-free` with the RPM Fusion build (H.264, AAC, etc.) and installs AMD VA-API for hardware video acceleration.
+Enables H.264/H.265 hardware decode. Follow the guide for your GPU vendor:
 
-```bash
-sudo rpm-ostree override remove \
-  ffmpeg-free libavcodec-free libavfilter-free libavformat-free \
-  libavutil-free libpostproc-free libswresample-free libswscale-free \
-  libavdevice-free --install ffmpeg
-
-sudo rpm-ostree install libva-utils
-systemctl reboot
-```
-
-Post-reboot, verify it worked:
-
-```bash
-vainfo
-ffmpeg -codecs 2>/dev/null | grep -E "h264|aac|hevc"
-```
+- AMD: [hardware/AMD_GPU_CODECS.md](./hardware/AMD_GPU_CODECS.md)
+- Intel: [hardware/INTEL_GPU_CODECS.md](./hardware/INTEL_GPU_CODECS.md)
 
 ## 6. Syncthing
 
@@ -122,26 +108,7 @@ Wait for 0everything to sync.
 
 ## 7. Zram
 
-Fedora caps zram at 8GB by default (`zram-size = min(ram / 2, 8192)`). Override it in `/etc` — no `rpm-ostree` needed since `/etc` is writable on Silverblue:
-
-```bash
-printf '[zram0]\nzram-size = ram / 2\n' | sudo tee /etc/systemd/zram-generator.conf
-```
-
-`ram / 2` gives 16GB on a 32GB machine. You can go higher (e.g. `ram`) since zram compresses data.
-
-Apply without rebooting:
-
-```bash
-sudo modprobe zram
-sudo systemctl restart systemd-zram-setup@zram0.service
-```
-
-Verify:
-
-```bash
-zramctl
-```
+If the machine has more than 16GB RAM, raise Fedora's default zram cap. See [hardware/ZRAM.md](./hardware/ZRAM.md).
 
 ## 8. Miscellaneous
 
@@ -152,9 +119,4 @@ sudo cp /var/home/jhen/0everything/0media/images/profile-pics/cartoonwagon.jpg /
 sudo systemctl restart accounts-daemon
 ```
 
-Note for Lenovo Yoga 7i - apply this to fix audio issues and reboot
-
-```bash
-echo "options snd-sof-intel-hda-generic hda_model=alc287-yoga9-bass-spk-pin" | sudo tee /etc/modprobe.d/yoga7i-audio.conf
-systemctl reboot
-```
+For device-specific quirks (audio fixes, etc.), see the [hardware/](./hardware/) folder.
