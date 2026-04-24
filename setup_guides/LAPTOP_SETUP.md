@@ -58,10 +58,11 @@ Flatpak apps (including Librewolf) and Syncthing are now installed and running.
 
 ## 3. SSH keys
 
-Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)), then load it and clone 0config:
+Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)), then load it and
+clone 0config:
 
 ```bash
-# Create a new Proton Pass login: ssh/<hostname>_personal_key
+# Create a new Proton Pass login: ssh-keys/<hostname>_personal_key
 # Generate a password in Proton Pass for the new key
 ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
 ssh-add -t 8h ~/.ssh/personal_key
@@ -71,7 +72,8 @@ cat ~/.ssh/personal_key.pub
 
 ## 4. Tailscale + RPM Fusion
 
-Install Tailscale (networking) and RPM Fusion (proprietary Fedora packages) together to save a reboot.
+Install Tailscale (networking) and RPM Fusion (proprietary Fedora packages) together to save a
+reboot.
 
 ```bash
 sudo rpm-ostree install tailscale \
@@ -102,13 +104,15 @@ Enables H.264/H.265 hardware decode. Follow the guide for your GPU vendor:
 
 ## 6. Syncthing
 
-Open the Syncthing UI at `http://localhost:8384` and copy the new laptop's device ID. Add it to `syncthing.nix`, then re-run `home-manager switch` on all machines. Accept the new device on phone.
+Open the Syncthing UI at `http://localhost:8384` and copy the new laptop's device ID. Add it to
+`syncthing.nix`, then re-run `home-manager switch` on all machines. Accept the new device on phone.
 
 Wait for 0everything to sync.
 
 ## 7. Zram
 
-If the machine has more than 16GB RAM, raise Fedora's default zram cap. See [hardware/ZRAM.md](./hardware/ZRAM.md).
+If the machine has more than 16GB RAM, raise Fedora's default zram cap. See
+[hardware/ZRAM.md](./hardware/ZRAM.md).
 
 ## 8. Miscellaneous
 

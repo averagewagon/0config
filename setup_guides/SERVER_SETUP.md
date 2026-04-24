@@ -1,14 +1,31 @@
 # Server Setup
 
-Steps to set up a new DigitalOcean Fedora droplet with 0config.
+Steps to set up a new cloud server with 0config. Works with any provider that offers Fedora as a
+hosted image and accepts an SSH key at creation time. Currently using Hetzner and DigitalOcean.
 
-## 1. Create the droplet
+## 1. Create the server
 
-Create a DigitalOcean droplet with Fedora as the OS. DigitalOcean requires an SSH key during setup — generate one and store it in Proton Pass. (You can skip using it and log into root through the DigitalOcean console instead.)
+In the cloud provider's dashboard, create a server with:
 
-## 2. As root (from DigitalOcean console)
+- **OS**: Fedora
+- **SSH key**: upload a public key from the machine you're currently on (Tailscale handles SSH after
+  this, so it's just for the initial login)
+- **Volume** (optional): for persistent `~/0everything` storage
+- **Backups** (optional): worth enabling once the server holds anything unique
 
-Create user with password (generate in Proton Pass):
+Log in as root over the public IPv4 using the uploaded key.
+
+## 2. As root
+
+Set a fresh root password. Store it in the Proton Pass `machine-logins` vault as a Login item with
+username `root@<hostname>` and a max-length generated password:
+
+```bash
+sudo passwd root
+```
+
+Create the jhen user with its own password (same vault, username `jhen@<hostname>`, max-length
+generated):
 
 ```bash
 useradd -m jhen
@@ -30,32 +47,28 @@ Install git:
 sudo dnf install -y git
 ```
 
+Exit the root session.
+
 ## 3. As jhen (via Tailscale SSH)
 
-Reconnect to the droplet using Tailscale MagicDNS
+Reconnect using Tailscale MagicDNS:
 
 ```bash
 ssh <hostname>
 ```
 
-Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)), then load it and clone 0config:
+Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)), then clone
+0config:
 
 ```bash
-# Create a new Proton Pass login: ssh/<hostname>_personal_key
-# Generate a password in Proton Pass for the new key
-ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
-eval "$(ssh-agent -s)"
-# Adding the key to the ssh-agent for 8 hours
-ssh-add -t 8h ~/.ssh/personal_key
-# store in Proton Pass item; upload to github.com/settings/keys
-cat ~/.ssh/personal_key.pub
 git clone git@github.com:hello-joni/0config.git
 ```
 
-Install Nix:
+Install Nix and source it for the current shell:
 
 ```bash
 curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 ```
 
 Set up external storage for Syncthing (if using an attached volume):
@@ -67,11 +80,11 @@ mkdir /mnt/<volume-name>/0everything
 ln -s /mnt/<volume-name>/0everything ~/0everything
 ```
 
-Restart shell, then activate Home Manager:
+Activate Home Manager:
 
 ```bash
 nix-shell -p home-manager
-home-manager switch --flake ~/0config#server
+home-manager switch --flake ~/0config#server -b backup
 ```
 
 ## 4. Syncthing
@@ -82,6 +95,7 @@ Access the server's Syncthing UI from your laptop:
 ssh -L 8385:localhost:8384 jhen@<hostname>
 ```
 
-Open `http://localhost:8385` and copy the new server's device ID. Add it to `syncthing.nix`, then re-run `home-manager switch` on all machines. Accept the new device on phone.
+Open `http://localhost:8385` and copy the new server's device ID. Add it to `syncthing.nix`, then
+re-run `home-manager switch` on all machines. Accept the new device on phone.
 
 Wait for 0everything to sync, then server setup is complete.
