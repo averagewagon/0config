@@ -14,27 +14,32 @@ home-manager switch --flake ~/0config#work
 ## Maintenance
 
 Updating Fedora Silverblue packages:
+
 ```bash
 rpm-ostree upgrade
 systemctl reboot
 ```
 
 Updating Fedora packages:
+
 ```bash
 sudo dnf upgrade
 ```
 
 Updating Debian packages:
+
 ```bash
 sudo apt update && sudo apt upgrade
 ```
 
 Updating Nix (run switch command after):
+
 ```bash
 nix flake update --flake ~/0config
 ```
 
 Garbage collecting Nix store:
+
 ```bash
 nix-collect-garbage -d
 ```

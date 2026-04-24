@@ -2,7 +2,8 @@
 
 H.264/H.265 hardware decode on AMD GPUs, Fedora Silverblue.
 
-Fedora strips patented codecs from `mesa-va-drivers` and `ffmpeg-free`. Swap both for RPM Fusion builds. Requires RPM Fusion repos (step 4 of [LAPTOP_SETUP.md](../LAPTOP_SETUP.md)).
+Fedora strips patented codecs from `mesa-va-drivers` and `ffmpeg-free`. Swap both for RPM Fusion
+builds. Requires RPM Fusion repos (step 4 of [LAPTOP_SETUP.md](../LAPTOP_SETUP.md)).
 
 ```bash
 sudo rpm-ostree override remove \

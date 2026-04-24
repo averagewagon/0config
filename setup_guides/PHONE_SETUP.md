@@ -28,6 +28,7 @@ git clone https://github.com/hello-joni/0config.git ~/0config
 ## 4. Fix DNS (if needed)
 
 If downloads time out, the VM's DNS may not be configured:
+
 ```bash
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 ```
@@ -57,10 +58,13 @@ sudo tailscale up
 ## Notes
 
 - The VM runs `aarch64-linux` (ARM64)
-- The VM can be reset by the Terminal app (e.g. during disk resize) - if this happens, re-run setup from step 2
+- The VM can be reset by the Terminal app (e.g. during disk resize) - if this happens, re-run setup
+  from step 2
 
 ### Fix DNS (if needed)
-If downloads time out or git fails with "Could not resolve host", overwrite the VM's DNS config with public resolvers:
+
+If downloads time out or git fails with "Could not resolve host", overwrite the VM's DNS config with
+public resolvers:
 
 ```bash
 sudo rm /etc/resolv.conf
@@ -69,4 +73,5 @@ echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
 sudo chattr +i /etc/resolv.conf
 ```
 
-The `chattr +i` makes the file immutable so Tailscale (or other services) won't overwrite it. To undo: `sudo chattr -i /etc/resolv.conf`.
+The `chattr +i` makes the file immutable so Tailscale (or other services) won't overwrite it. To
+undo: `sudo chattr -i /etc/resolv.conf`.

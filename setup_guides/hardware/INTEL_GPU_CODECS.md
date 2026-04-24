@@ -2,7 +2,10 @@
 
 H.264/H.265 hardware decode on Intel GPUs (Broadwell and newer), Fedora Silverblue.
 
-Fedora strips patented codecs from `ffmpeg-free`. Swap it for the RPM Fusion build and add `intel-media-driver` (iHD, the modern VA-API driver; pre-Broadwell hardware uses `libva-intel-driver` / i965 instead). Requires RPM Fusion repos (step 4 of [LAPTOP_SETUP.md](../LAPTOP_SETUP.md)).
+Fedora strips patented codecs from `ffmpeg-free`. Swap it for the RPM Fusion build and add
+`intel-media-driver` (iHD, the modern VA-API driver; pre-Broadwell hardware uses
+`libva-intel-driver` / i965 instead). Requires RPM Fusion repos (step 4 of
+[LAPTOP_SETUP.md](../LAPTOP_SETUP.md)).
 
 ```bash
 sudo rpm-ostree override remove \
