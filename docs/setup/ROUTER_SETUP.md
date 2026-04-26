@@ -63,18 +63,18 @@ targets.
 
 Log out and back into LuCI, then navigate to Network → SQM QoS:
 
-**Basic Settings:**
+### Basic Settings
 
 - Enable: checked
 - Interface: `eth0` (WAN)
 - Download / Upload speed: 90% of baseline results (in kbit/s)
 
-**Queue Discipline:**
+### Queue Discipline:
 
 - Queueing Discipline: `cake`
 - Queue Setup Script: `piece_of_cake.qos`
 
-**Link Layer Adaptation** (for fiber/ethernet):
+### Link Layer Adaptation (for fiber/ethernet):
 
 - Link Layer Type: `Ethernet`
 - Per Packet Overhead: `44` bytes
