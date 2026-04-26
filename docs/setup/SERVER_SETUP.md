@@ -7,11 +7,8 @@ hosted image and accepts an SSH key at creation time. Currently using Hetzner an
 
 In the cloud provider's dashboard, create a server with:
 
-- **OS**: Fedora
-- **SSH key**: upload a public key from the machine you're currently on (Tailscale handles SSH after
-  this, so it's just for the initial login)
-- **Volume** (optional): for persistent `~/0everything` storage
-- **Backups** (optional): worth enabling once the server holds anything unique
+- OS: Fedora
+- SSH key: upload a public key from the machine you're currently on
 
 Log in as root over the public IPv4 using the uploaded key.
 
