@@ -15,3 +15,4 @@
   machine needs both, so `fenugreek_personal_key` and `fenugreek_work_key`
 - Fish: show a warning when no SSH key is loaded into the agent
 - Add Statix linting
+- Name machines with type - e.g. laptop_saffron instead of saffron
