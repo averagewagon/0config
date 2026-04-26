@@ -7,7 +7,6 @@
   programs.git.settings.user.email = "jonathan.hendrickson@bonsairobotics.ai";
 
   home.packages = with pkgs; [
-    distrobox
     gnumake
     vcs2l
     (python3.withPackages (ps: with ps; [ pyyaml ]))

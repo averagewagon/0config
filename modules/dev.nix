@@ -8,6 +8,7 @@
     nil # Nix language server
     prettier # Markdown/JSON/YAML/etc formatter
     htop # View running processes
+    distrobox # Virtual machines for dev
 
     # Git diagnostic aliases (credit: Ally Piechowski)
     # https://piechowski.io/post/git-commands-before-reading-code/
