@@ -8,6 +8,7 @@
     nil # Nix language server
     prettier # Markdown/JSON/YAML/etc formatter
     distrobox # Virtual machines for dev
+    jq # JSON processor
 
     # Git diagnostic aliases (credit: Ally Piechowski)
     # https://piechowski.io/post/git-commands-before-reading-code/
@@ -49,6 +50,51 @@
       echo "Reverts, hotfixes, and rollbacks. Optional: pass a date, e.g. '2026-01-01' (default: 1 year ago)."
       echo ""
       git log --oneline --since="''${1:-1 year ago}" | grep -iE 'revert|hotfix|emergency|rollback'
+    '')
+
+    # Idempotent DNS record upsert against DNSimple. Filters by type via API,
+    # by name locally - cannot affect records of any type other than the one
+    # passed in. Reads DNSIMPLE_TOKEN and DNSIMPLE_ACCOUNT_ID from env.
+    (writeShellScriptBin ",dnsimple-set" ''
+      set -euo pipefail
+
+      echo "Idempotent DNS upsert at DNSimple. Args: <zone> <name> <type> <content>."
+      echo "Reads DNSIMPLE_TOKEN and DNSIMPLE_ACCOUNT_ID from env, prompts if unset."
+      echo ""
+
+      [ $# -eq 4 ] || { echo "usage: ,dnsimple-set <zone> <name> <type> <content>" >&2; exit 1; }
+      zone=$1 name=$2 type=$3 content=$4
+
+      [ -n "''${DNSIMPLE_TOKEN:-}" ] || { read -rsp "DNSimple API token: " DNSIMPLE_TOKEN; echo; }
+      [ -n "''${DNSIMPLE_ACCOUNT_ID:-}" ] || read -rp "DNSimple account ID: " DNSIMPLE_ACCOUNT_ID
+
+      api="https://api.dnsimple.com/v2/$DNSIMPLE_ACCOUNT_ID/zones/$zone/records"
+      auth="Authorization: Bearer $DNSIMPLE_TOKEN"
+      ac="Accept: application/json"
+      ct="Content-Type: application/json"
+
+      matches=$(curl -fsS -H "$auth" -H "$ac" "$api?type=$type" \
+        | jq -c --arg n "$name" --arg t "$type" \
+            '[.data[] | select(.name == $n and .type == $t)]')
+      count=$(echo "$matches" | jq 'length')
+
+      if [ "$count" -gt 1 ]; then
+        echo "ERROR: $count $type records found for name='$name' in $zone, refusing to guess" >&2
+        echo "$matches" | jq -r '.[] | "  id=\(.id) content=\(.content)"' >&2
+        exit 1
+      fi
+
+      body=$(jq -nc --arg n "$name" --arg t "$type" --arg c "$content" '{name:$n,type:$t,content:$c}')
+      fqdn=''${name:+$name.}$zone
+
+      if [ "$count" -eq 1 ]; then
+        id=$(echo "$matches" | jq -r '.[0].id')
+        curl -fsS -X PATCH -H "$auth" -H "$ac" -H "$ct" -d "$body" "$api/$id" >/dev/null
+        echo "updated $type $fqdn -> $content"
+      else
+        curl -fsS -X POST -H "$auth" -H "$ac" -H "$ct" -d "$body" "$api" >/dev/null
+        echo "created $type $fqdn -> $content"
+      fi
     '')
   ];
 

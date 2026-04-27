@@ -63,6 +63,13 @@
             { home.homeDirectory = "/home/jhen"; }
           ];
         };
+        "webserver" = mkHome {
+          modules = [
+            ./modules/base.nix
+            ./modules/webserver.nix
+            { home.homeDirectory = "/home/jhen"; }
+          ];
+        };
         "phone" = mkHome {
           system = "aarch64-linux";
           modules = [
