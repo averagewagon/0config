@@ -45,6 +45,7 @@
 
     programs.git = {
       enable = true;
+      lfs.enable = true;
       settings = {
         user = {
           name = lib.mkDefault "Joni Hendrickson";
