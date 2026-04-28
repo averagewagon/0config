@@ -8,7 +8,7 @@
 {
   # Needed to wrap anything GPU-accelerated, e.g. Zed, Subsurface
   targets.genericLinux.nixGL = {
-    packages = nixgl.packages;
+    inherit (nixgl) packages;
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
     vulkan.enable = true;

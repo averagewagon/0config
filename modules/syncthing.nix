@@ -1,6 +1,4 @@
-{
-  ...
-}:
+_:
 
 {
   # Add new machines here when I'm done configuring them and update other configs

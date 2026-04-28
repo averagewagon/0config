@@ -1,6 +1,4 @@
-{
-  ...
-}:
+_:
 
 {
   # Caddy itself is installed via dnf and runs as the `caddy` system user so it
