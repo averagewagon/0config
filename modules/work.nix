@@ -4,8 +4,6 @@
 }:
 
 {
-  programs.git.settings.user.email = "jonathan.hendrickson@bonsairobotics.ai";
-
   home.packages = with pkgs; [
     gnumake
     vcs2l
@@ -22,46 +20,53 @@
     jira-cli-go # Jira CLI
   ];
 
-  # Disable SELinux labeling for containers globally
-  home.file.".config/containers/containers.conf".text = ''
-    [containers]
-    label = false
-  '';
+  home.file = {
+    # Disable SELinux labeling for containers globally
+    ".config/containers/containers.conf".text = ''
+      [containers]
+      label = false
+    '';
 
-  # SSH alias for pushing to personal GitHub repos from work machine
-  programs.ssh = {
-    enable = true;
-    enableDefaultConfig = false;
-    matchBlocks."github.com" = {
-      identityFile = "~/.ssh/id_ed25519";
-      identitiesOnly = true;
-    };
-    matchBlocks."github-personal" = {
-      hostname = "github.com";
-      identityFile = "~/.ssh/personal_key";
-      identitiesOnly = true;
-    };
+    # Docker build mounts ~/.gitconfig but Home Manager writes to ~/.config/git/config
+    ".gitconfig".text = ''
+      [include]
+        path = ~/.config/git/config
+    '';
+
+    # Use personal git identity for 0config repo even on work machine
+    ".config/git/config-0config".text = ''
+      [user]
+        name = Joni Hendrickson
+        email = contact@joni.site
+    '';
   };
 
-  # Docker build mounts ~/.gitconfig but Home Manager writes to ~/.config/git/config
-  home.file.".gitconfig".text = ''
-    [include]
-      path = ~/.config/git/config
-  '';
+  programs = {
+    git = {
+      settings.user.email = "jonathan.hendrickson@bonsairobotics.ai";
+      includes = [
+        {
+          condition = "gitdir:~/0config/";
+          path = "~/.config/git/config-0config";
+        }
+      ];
+    };
 
-  # Use personal git identity for 0config repo even on work machine
-  home.file.".config/git/config-0config".text = ''
-    [user]
-      name = Joni Hendrickson
-      email = contact@joni.site
-  '';
-
-  programs.git.includes = [
-    {
-      condition = "gitdir:~/0config/";
-      path = "~/.config/git/config-0config";
-    }
-  ];
+    # SSH alias for pushing to personal GitHub repos from work machine
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      matchBlocks."github.com" = {
+        identityFile = "~/.ssh/work_key";
+        identitiesOnly = true;
+      };
+      matchBlocks."github-personal" = {
+        hostname = "github.com";
+        identityFile = "~/.ssh/personal_key";
+        identitiesOnly = true;
+      };
+    };
+  };
 
   dconf.settings."org/gnome/shell" = {
     favorite-apps = [
