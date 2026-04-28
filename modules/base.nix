@@ -30,6 +30,19 @@
       htop # View running processes
     ];
 
+    programs.neovim = {
+      enable = true;
+      defaultEditor = true;
+      withRuby = false;
+      withPython3 = false;
+    };
+
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options.line-numbers = true;
+    };
+
     programs.git = {
       enable = true;
       settings = {
@@ -38,6 +51,7 @@
           email = lib.mkDefault "contact@joni.site";
         };
         init.defaultBranch = "main";
+        core.editor = "nvim";
       };
     };
 
@@ -47,6 +61,9 @@
       interactiveShellInit = ''
         fish_config theme choose base16-default
         fish_config prompt choose default
+        # Force nvim as editor
+        set -gx EDITOR nvim
+        set -gx VISUAL nvim
         # Colorful man pages in less
         set -gx GROFF_NO_SGR 1
         set -gx LESS_TERMCAP_mb (set_color -o red)
