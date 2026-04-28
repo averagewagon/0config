@@ -55,9 +55,13 @@
       name = Joni Hendrickson
       email = contact@joni.site
   '';
-  programs.git.settings.includeIf."gitdir:~/0config/" = {
-    path = "~/.config/git/config-0config";
-  };
+
+  programs.git.includes = [
+    {
+      condition = "gitdir:~/0config/";
+      path = "~/.config/git/config-0config";
+    }
+  ];
 
   dconf.settings."org/gnome/shell" = {
     favorite-apps = [
