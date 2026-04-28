@@ -12,6 +12,10 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -20,6 +24,7 @@
       home-manager,
       nix-flatpak,
       nixgl,
+      treefmt-nix,
       ...
     }:
     let
@@ -33,8 +38,20 @@
           extraSpecialArgs = { inherit nixgl; };
           inherit modules;
         };
+
+      treefmtEval =
+        system:
+        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} {
+          projectRootFile = "flake.nix";
+          programs.nixfmt.enable = true;
+          programs.prettier.enable = true;
+        };
     in
     {
+      formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
+        system: (treefmtEval system).config.build.wrapper
+      );
+
       homeConfigurations = {
         "laptop" = mkHome {
           modules = [

@@ -27,7 +27,8 @@ ssh-add -t 8h ~/.ssh/work_key
 cat ~/.ssh/work_key.pub
 ```
 
-Upload `personal_key.pub` to [github.com/settings/keys](https://github.com/settings/keys) and `work_key.pub` to the company GitHub.
+Upload `personal_key.pub` to [github.com/settings/keys](https://github.com/settings/keys) and
+`work_key.pub` to the company GitHub.
 
 ## 2. Clone 0config using the personal SSH alias
 

@@ -34,7 +34,6 @@
     adwaita-qt6 # Adwaita theme for Qt6 apps
   ];
 
-
   # GUI text editor
   programs.zed-editor = {
     enable = true;
