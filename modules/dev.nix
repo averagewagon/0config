@@ -6,6 +6,7 @@
 {
   home.packages = with pkgs; [
     nil # Nix language server
+    nixd # Other Nix language server
     prettier # Markdown/JSON/YAML/etc formatter
     distrobox # Virtual machines for dev
     jq # JSON processor

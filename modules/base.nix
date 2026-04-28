@@ -11,6 +11,8 @@
     home.homeDirectory = lib.mkDefault "/var/home/jhen";
     home.stateVersion = "25.11"; # Don't change without reading HM release notes
 
+    news.display = "silent";
+
     programs.home-manager.enable = true;
 
     nix = {
