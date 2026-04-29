@@ -7,6 +7,7 @@
 {
   home.packages = with pkgs; [
     (config.lib.nixGL.wrap subsurface) # Dive log software
+    gh
   ];
 
   dconf.settings."org/gnome/shell" = {
