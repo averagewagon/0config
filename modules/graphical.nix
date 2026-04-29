@@ -140,6 +140,7 @@
         autohide = true;
         intellihide = false;
         show-trash = false;
+        show-show-apps-button = false;
       };
       "org/gnome/shell/extensions/vitals" = {
         icon-style = 1;
