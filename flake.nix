@@ -87,6 +87,15 @@
             { home.homeDirectory = "/home/jhen"; }
           ];
         };
+        "selfhost" = mkHome {
+          modules = [
+            ./modules/base.nix
+            ./modules/dev.nix
+            ./modules/syncthing.nix
+            ./modules/selfhost.nix
+            { home.homeDirectory = "/home/jhen"; }
+          ];
+        };
         "webserver" = mkHome {
           modules = [
             ./modules/base.nix
