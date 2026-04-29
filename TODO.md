@@ -10,9 +10,8 @@
   - folder for new attachments
 - Switch off GitHub (for Codeberg?)
 - RSS feed reader which syncs between phone and computer
-- Get helper scripts set up
 - Name SSH keys after the machine instead of `personal_key` universally (e.g. `saffron_key`); work
   machine needs both, so `fenugreek_personal_key` and `fenugreek_work_key`
 - Fish: show a warning when no SSH key is loaded into the agent
-- Add Statix linting
 - Name machines with type - e.g. laptop_saffron instead of saffron
+- Add symlinking 0config and prepping zed workspace w/ docs as helper step
