@@ -1,13 +1,13 @@
 # Server Setup
 
-Steps to set up a new cloud server with 0config. Works with any provider that offers Fedora as a
-hosted image and accepts an SSH key at creation time. Currently using Hetzner and DigitalOcean.
+Steps to set up a new cloud server with 0config. Works with any provider that offers Rocky Linux as
+a hosted image and accepts an SSH key at creation time. Currently using Hetzner and DigitalOcean.
 
 ## 1. Create the server
 
 In the cloud provider's dashboard, create a server with:
 
-- OS: Fedora
+- OS: Rocky Linux (latest stable)
 - SSH key: upload a public key from the machine you're currently on
 
 Log in as root over the public IPv4 using the uploaded key.
@@ -18,30 +18,30 @@ Set a fresh root password. Store it in the Proton Pass `machine-logins` vault as
 username `root@<hostname>` and a max-length generated password:
 
 ```bash
-sudo passwd root
+passwd root
 ```
 
 Create the jhen user with its own password (same vault, username `jhen@<hostname>`, max-length
 generated):
 
 ```bash
-useradd -m jhen
+useradd -m -s /bin/bash jhen
 passwd jhen
 usermod -aG wheel jhen
 ```
 
-Install and enable Tailscale (with SSH auth):
+Install and enable Tailscale (with SSH auth) using their official installer:
 
 ```bash
-sudo dnf install -y tailscale
-sudo systemctl enable --now tailscaled
+curl -fsSL https://tailscale.com/install.sh | sh
+systemctl enable --now tailscaled
 tailscale up --ssh
 ```
 
 Install git:
 
 ```bash
-sudo dnf install -y git
+dnf install -y git
 ```
 
 Exit the root session.
