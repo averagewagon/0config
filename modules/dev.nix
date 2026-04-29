@@ -55,6 +55,11 @@
       git log --oneline --since="''${1:-1 year ago}" | grep -iE 'revert|hotfix|emergency|rollback'
     '')
 
+    # Conventional Commits cheatsheet
+    (writeShellScriptBin ",coco" ''
+      echo "feat! fix! build chore ci docs style refactor perf test | todo"
+    '')
+
     # Update DNS records on DNSimple
     (writeShellScriptBin ",dnsimple-set" ''
       set -euo pipefail
