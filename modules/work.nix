@@ -61,7 +61,7 @@
         identitiesOnly = true;
       };
       matchBlocks."github-personal" = {
-        hostname = "github.com";
+        hostname = "ssh.github.com";
         identityFile = "~/.ssh/personal_key";
         identitiesOnly = true;
       };
