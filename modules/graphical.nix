@@ -139,6 +139,7 @@
         dock-fixed = false;
         autohide = true;
         intellihide = false;
+        show-trash = false;
       };
       "org/gnome/shell/extensions/vitals" = {
         icon-style = 1;
