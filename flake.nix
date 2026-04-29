@@ -46,6 +46,13 @@
           programs.nixfmt.enable = true;
           programs.prettier.enable = true;
         };
+
+      envOrThrow =
+        name:
+        let
+          v = builtins.getEnv name;
+        in
+        if v == "" then throw "${name} is unset; run with --impure" else v;
     in
     {
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
@@ -95,6 +102,30 @@
             {
               home.username = "droid";
               home.homeDirectory = "/home/droid";
+            }
+          ];
+        };
+        "generic-headless" = mkHome {
+          system = builtins.currentSystem;
+          modules = [
+            ./modules/base.nix
+            ./modules/dev.nix
+            {
+              home.username = envOrThrow "USER";
+              home.homeDirectory = envOrThrow "HOME";
+            }
+          ];
+        };
+        "generic-graphical" = mkHome {
+          system = builtins.currentSystem;
+          modules = [
+            ./modules/base.nix
+            ./modules/dev.nix
+            ./modules/graphical.nix
+            nix-flatpak.homeManagerModules.nix-flatpak
+            {
+              home.username = envOrThrow "USER";
+              home.homeDirectory = envOrThrow "HOME";
             }
           ];
         };
