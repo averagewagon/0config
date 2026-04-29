@@ -20,6 +20,9 @@ _:
 
         # Hetzner server
         horseradish.id = "PKN3I6Q-MPHESJ5-CTBBLUV-TAEN5KK-5UA27JE-26EUKCL-CVSP74A-RG237QD";
+
+        # Selfhost server
+        sh-sassafras.id = "4PJJBRC-HM7M4I7-FUZYMAP-3XXJ5P5-UHDIY67-NA5X53V-UW7H2IF-PMISLAB";
       };
       folders."~/0everything" = {
         id = "0everything";
@@ -33,6 +36,7 @@ _:
           "cayenne"
           "saffron"
           "horseradish"
+          "sh-sassafras"
         ];
       };
     };
