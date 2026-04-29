@@ -62,12 +62,12 @@ Set up an SSH key for this machine (see [SSH_KEYS.md](./credentials/SSH_KEYS.md)
 clone 0config:
 
 ```bash
-# Create a new Proton Pass login: ssh-keys/<hostname>_personal_key
+# Create a new Proton Pass login: ssh-keys/<hostname>-personal-key
 # Generate a password in Proton Pass for the new key
-ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/personal_key
-ssh-add -t 8h ~/.ssh/personal_key
+ssh-keygen -t ed25519 -C "contact@joni.site" -f ~/.ssh/$(hostname)-personal-key
+ssh-add -t 8h ~/.ssh/$(hostname)-personal-key
 # store in Proton Pass item; upload to github.com/settings/keys
-cat ~/.ssh/personal_key.pub
+cat ~/.ssh/$(hostname)-personal-key.pub
 ```
 
 ## 4. Tailscale + RPM Fusion
