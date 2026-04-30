@@ -4,10 +4,17 @@
 }:
 
 {
+  # Documentation
+  programs.man = {
+    enable = true;
+    generateCaches = true;
+  };
+
   home.packages = with pkgs; [
     nil # Nix language server
     nixd # Other Nix language server
     nixfmt # Official RFC 166 Nix formatter
+    nix.man # Manpages for nix, nix-shell, nix.conf, etc.
     statix # Nix linter
     prettier # Markdown/JSON/YAML/etc formatter
     distrobox # Virtual machines for dev
