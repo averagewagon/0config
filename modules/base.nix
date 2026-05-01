@@ -62,6 +62,7 @@
       # Shell configuration with fish
       fish = {
         enable = true;
+        generateCompletions = true;
         interactiveShellInit = ''
           fish_config theme choose base16-default
           fish_config prompt choose default
