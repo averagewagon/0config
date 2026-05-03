@@ -16,11 +16,17 @@
       "org.gnome.Nautilus.desktop"
       "org.gnome.Ptyxis.desktop"
       "dev.zed.Zed.desktop"
+      "com.actualbudget.actual.desktop"
       "md.obsidian.Obsidian.desktop"
     ];
   };
 
   services.flatpak.packages = [
+    {
+      # Personal finance
+      appId = "com.actualbudget.actual";
+      origin = "flathub";
+    }
     {
       # Chat app - Matrix client
       appId = "im.fluffychat.Fluffychat";
