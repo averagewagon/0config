@@ -36,10 +36,11 @@ public internet.
 
 ## 4. Expose via Tailscale Serve
 
-Bind the container to the host's tailnet name with automatic HTTPS:
+Bind each container to the host's tailnet name with automatic HTTPS:
 
 ```bash
-tailscale serve --bg --https=443 http://localhost:5006
+tailscale serve --bg --https=443 http://localhost:5006   # Actual
+tailscale serve --bg --https=8443 http://localhost:3000  # SilverBullet
 ```
 
 Verify:
@@ -48,8 +49,12 @@ Verify:
 tailscale serve status
 ```
 
-Actual is now reachable at `https://<hostname>.<tailnet>.ts.net` from any device on the tailnet,
-including the phone. The `tailscale serve` config persists in `/var/lib/tailscale/` across reboots.
+Services are now reachable from any device on the tailnet:
+
+- Actual: `https://<hostname>.<tailnet>.ts.net`
+- SilverBullet: `https://<hostname>.<tailnet>.ts.net:8443`
+
+The `tailscale serve` config persists in `/var/lib/tailscale/` across reboots.
 
 ## 5. First-run
 
