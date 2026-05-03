@@ -9,6 +9,7 @@
     enable = true;
     generateCaches = true;
   };
+  programs.info.enable = true;
 
   home.packages = with pkgs; [
     nil # Nix language server
