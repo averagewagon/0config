@@ -15,9 +15,6 @@ _:
         # Laptop
         saffron.id = "T2F7ICT-EMNBQH6-TBDQ4DE-7X7J57J-QCGWIS2-VXBN4HB-LRGNZUZ-AFI5IQF";
 
-        # DigitalOcean server
-        cayenne.id = "WWUKSOV-7RTMEK5-464TFFY-JHMUAPJ-EOO7I5I-L4NB4E6-UHB5357-SP636QU";
-
         # Hetzner server
         horseradish.id = "PKN3I6Q-MPHESJ5-CTBBLUV-TAEN5KK-5UA27JE-26EUKCL-CVSP74A-RG237QD";
 
@@ -33,7 +30,6 @@ _:
         };
         devices = [
           "ginger"
-          "cayenne"
           "saffron"
           "horseradish"
           "sh-sassafras"
