@@ -16,7 +16,6 @@
       "org.gnome.Nautilus.desktop"
       "org.gnome.Ptyxis.desktop"
       "dev.zed.Zed.desktop"
-      "com.actualbudget.actual.desktop"
       "md.obsidian.Obsidian.desktop"
     ];
   };
