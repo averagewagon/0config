@@ -21,19 +21,42 @@
     distrobox # Virtual machines for dev
     jq # JSON processor
 
+    # Lists all ,-prefixed personal scripts with their --help output.
+    (writeShellScriptBin ",help" ''
+      printf '\033[1;36m,help\033[0m\n'
+      echo "Lists all ',' prefixed personal scripts on PATH with their descriptions."
+      echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
+      echo "$PATH" | tr ':' '\n' | while read -r d; do
+        [ -d "$d" ] || continue
+        for f in "$d"/,*; do
+          [ -x "$f" ] && basename "$f"
+        done
+      done | sort -u | while read -r cmd; do
+        [ "$cmd" = ",help" ] && continue
+        "$cmd" --help 2>/dev/null
+      done
+    '')
+
     # Git diagnostic aliases (credit: Ally Piechowski)
     # https://piechowski.io/post/git-commands-before-reading-code/
-    (writeShellScriptBin ",git-churn" ''
-      echo "Top 20 most-changed files in the last year. Optional: pass a string to filter by path."
-      echo "Files that appear on both ,git-churn and ,git-bugs are highest-risk code."
+    (writeShellScriptBin ",git-top-changed-files" ''
+      printf '\033[1;36m,git-top-changed-files\033[0m \033[2m[path]\033[0m\n'
+      echo "Top 20 most-changed files in the last year."
+      echo "Files that appear on both ,git-top-changed-files and ,git-top-buggy-files are highest-risk code."
       echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       git log --format=format: --name-only --since="1 year ago" \
         | { [ -n "$1" ] && grep -F "$1" || cat; } \
         | sort | uniq -c | sort -nr | head -20
     '')
+
     (writeShellScriptBin ",git-contributors" ''
-      echo "Contributors ranked by commit count. Optional: pass a date to filter, e.g. '2026-01-01', and/or a path."
+      printf '\033[1;36m,git-contributors\033[0m \033[2m[since] [path]\033[0m\n'
+      echo "Contributors ranked by commit count."
+      echo "'since' is a date like '2026-01-01' or a relative phrase like '1 year ago'."
       echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       args=(-sn --no-merges)
       [ -n "''${1:-}" ] && args+=(--since="$1")
       if [ -n "''${2:-}" ]; then
@@ -42,26 +65,37 @@
         git shortlog "''${args[@]}" HEAD
       fi
     '')
-    (writeShellScriptBin ",git-bugs" ''
-      echo "Top 20 files most associated with bug-fix commits. Optional: pass a string to filter by path."
-      echo "Files that appear on both ,git-churn and ,git-bugs are highest-risk code."
+
+    (writeShellScriptBin ",git-top-buggy-files" ''
+      printf '\033[1;36m,git-top-buggy-files\033[0m \033[2m[path]\033[0m\n'
+      echo "Top 20 files most associated with bug-fix commits."
+      echo "Files that appear on both ,git-top-changed-files and ,git-top-buggy-files are highest-risk code."
       echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       git log -i -E --grep="fix|bug|broken" --name-only --format="" \
         | { [ -n "$1" ] && grep -F "$1" || cat; } \
         | sort | uniq -c | sort -nr | head -20
     '')
-    (writeShellScriptBin ",git-velocity" ''
-      echo "Commit count by month. Optional: pass a date to limit history, e.g. '2025-01-01'."
+
+    (writeShellScriptBin ",git-commits-by-month" ''
+      printf '\033[1;36m,git-commits-by-month\033[0m \033[2m[since]\033[0m\n'
+      echo "Commit count by month."
+      echo "'since' is a date like '2025-01-01' or a relative phrase like '1 year ago'."
       echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       if [ -n "$1" ]; then
         git log --since="$1" --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
       else
         git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
       fi
     '')
-    (writeShellScriptBin ",git-firefights" ''
-      echo "Reverts, hotfixes, and rollbacks. Optional: pass a date (default: 1 year ago) and/or a path."
+
+    (writeShellScriptBin ",git-reverts-and-hotfixes" ''
+      printf '\033[1;36m,git-reverts-and-hotfixes\033[0m \033[2m[since] [path]\033[0m\n'
+      echo "Reverts, hotfixes, and rollbacks."
+      echo "'since' defaults to '1 year ago'."
       echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       since=''${1:-1 year ago}
       if [ -n "''${2:-}" ]; then
         git log --oneline --since="$since" -- "$2"
@@ -70,11 +104,13 @@
       fi | grep -iE 'revert|hotfix|emergency|rollback'
     '')
 
-    (writeShellScriptBin ",git-file-churn" ''
+    (writeShellScriptBin ",git-file-stats" ''
+      printf '\033[1;36m,git-file-stats\033[0m \033[2m<path>\033[0m\n'
       echo "Stats for a single file: commits, distinct authors, first/last touched, commits/month."
       echo "Use to assess how active or stable a file is over time."
       echo ""
-      [ $# -eq 1 ] || { echo "usage: ,git-file-churn <path>" >&2; exit 1; }
+      [ "''${1:-}" = "--help" ] && exit 0
+      [ $# -eq 1 ] || { echo "usage: ,git-file-stats <path>" >&2; exit 1; }
       path=$1
       commits=$(git log --follow --format=%H -- "$path" | wc -l)
       if [ "$commits" -eq 0 ]; then
@@ -93,11 +129,13 @@
       printf "commits/month:  %s\n" "$rate"
     '')
 
-    (writeShellScriptBin ",git-file-cochange" ''
+    (writeShellScriptBin ",git-file-related-files" ''
+      printf '\033[1;36m,git-file-related-files\033[0m \033[2m<path>\033[0m\n'
       echo "Top 20 files most often committed alongside the given file."
       echo "Files high on this list often share concerns or get touched together for the same reason."
       echo ""
-      [ $# -eq 1 ] || { echo "usage: ,git-file-cochange <path>" >&2; exit 1; }
+      [ "''${1:-}" = "--help" ] && exit 0
+      [ $# -eq 1 ] || { echo "usage: ,git-file-related-files <path>" >&2; exit 1; }
       path=$1
       shas=$(git log --follow --format=%H -- "$path")
       [ -n "$shas" ] || { echo "no commits touching $path"; exit 0; }
@@ -108,10 +146,12 @@
         | sort | uniq -c | sort -nr | head -20
     '')
 
-    (writeShellScriptBin ",git-file-recent" ''
+    (writeShellScriptBin ",git-file-log" ''
+      printf '\033[1;36m,git-file-log\033[0m \033[2m<path> [n]\033[0m\n'
       echo "Last N commits touching the file (default 20). Shows date, sha, author, subject."
       echo ""
-      [ $# -ge 1 ] || { echo "usage: ,git-file-recent <path> [n]" >&2; exit 1; }
+      [ "''${1:-}" = "--help" ] && exit 0
+      [ $# -ge 1 ] || { echo "usage: ,git-file-log <path> [n]" >&2; exit 1; }
       path=$1
       n=''${2:-20}
       git log --follow --date=short --pretty=format:'%ad %h %an: %s' -n "$n" -- "$path"
@@ -119,9 +159,11 @@
     '')
 
     (writeShellScriptBin ",git-line-log" ''
+      printf '\033[1;36m,git-line-log\033[0m \033[2m<path> <start>[:<end>]\033[0m\n'
       echo "Commit history for specific lines in a file (one line per commit, no diff)."
       echo "Useful for spotting whether a region is stable, recently rewritten, or thrashed."
       echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       [ $# -eq 2 ] || { echo "usage: ,git-line-log <path> <start>[:<end>]" >&2; exit 1; }
       path=$1
       range=$2
@@ -133,11 +175,13 @@
       echo ""
     '')
 
-    (writeShellScriptBin ",git-line-blame" ''
-      echo "Blame summary: % of lines per author and median line age. Optional line range."
+    (writeShellScriptBin ",git-line-authors" ''
+      printf '\033[1;36m,git-line-authors\033[0m \033[2m<path> [start[:end]]\033[0m\n'
+      echo "Blame summary: % of lines per author and median line age."
       echo "Old + concentrated lines are stable; young + scattered lines are in flux."
       echo ""
-      [ $# -ge 1 ] || { echo "usage: ,git-line-blame <path> [start[:end]]" >&2; exit 1; }
+      [ "''${1:-}" = "--help" ] && exit 0
+      [ $# -ge 1 ] || { echo "usage: ,git-line-authors <path> [start[:end]]" >&2; exit 1; }
       path=$1
       range_args=()
       if [ $# -ge 2 ]; then
@@ -169,6 +213,10 @@
 
     # Conventional Commits cheatsheet
     (writeShellScriptBin ",coco" ''
+      printf '\033[1;36m,coco\033[0m\n'
+      echo "Conventional Commits prefix cheatsheet."
+      echo ""
+      [ "''${1:-}" = "--help" ] && exit 0
       echo "feat! fix! build chore ci docs style refactor perf test | todo"
     '')
 
@@ -176,10 +224,12 @@
     (writeShellScriptBin ",dnsimple-set" ''
       set -euo pipefail
 
-      echo "Idempotent DNS upsert at DNSimple. Args: <zone> <name> <type> <content>."
+      printf '\033[1;36m,dnsimple-set\033[0m \033[2m<zone> <name> <type> <content>\033[0m\n'
+      echo "Idempotent DNS upsert at DNSimple."
       echo "Reads DNSIMPLE_TOKEN and DNSIMPLE_ACCOUNT_ID from env, prompts if unset."
       echo ""
 
+      [ "''${1:-}" = "--help" ] && exit 0
       [ $# -eq 4 ] || { echo "usage: ,dnsimple-set <zone> <name> <type> <content>" >&2; exit 1; }
       zone=$1 name=$2 type=$3 content=$4
 
