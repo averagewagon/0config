@@ -8,8 +8,8 @@ All container declarations live in [`modules/selfhost.nix`](../../modules/selfho
 is the single source of truth for every self-hosted service. The `selfhost` flake target adds it on
 top of `base + dev + syncthing`.
 
-Container data lives under `~/0selfhost/<app>/` on the host. This is separate from
-`~/0everything/`, so containers cannot reach Syncthing-managed files.
+Container data lives under `~/0selfhost/<app>/` on the host. This is separate from `~/0everything/`,
+so containers cannot reach Syncthing-managed files.
 
 Access is Tailscale-only. Each container binds to `127.0.0.1:<port>` and is exposed via
 `tailscale serve` (see [SELFHOST_SETUP.md](../setup/SELFHOST_SETUP.md)).
@@ -43,10 +43,10 @@ home.activation.selfhostDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
   ambiguity with quay or ghcr.
 - `ports` - list of `<host-ip>:<host-port>:<container-port>` strings. Always bind to `127.0.0.1` so
   `tailscale serve` is the only ingress.
-- `volumes` - list of `<host-path>:<container-path>[:ro|:z|:Z]` strings. Use `:z` if SELinux
-  rejects bind-mounts (Rocky's default policy usually accepts rootless paths under `~`).
-- `environment` - attrset of env vars. Use `environmentFile` for secrets so they don't end up in
-  the Nix store.
+- `volumes` - list of `<host-path>:<container-path>[:ro|:z|:Z]` strings. Use `:z` if SELinux rejects
+  bind-mounts (Rocky's default policy usually accepts rootless paths under `~`).
+- `environment` - attrset of env vars. Use `environmentFile` for secrets so they don't end up in the
+  Nix store.
 - `autoUpdate = "registry"` - per-container; pulls the latest image on the global timer.
 - `extraPodmanArgs` - escape hatch for flags the module doesn't model.
 - `extraConfig` - escape hatch for raw quadlet INI sections.

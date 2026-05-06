@@ -32,7 +32,8 @@ and `<hostname>-work-key.pub` to the company GitHub.
 
 ## 2. Clone 0config using the personal SSH alias
 
-The `github-personal` SSH host is configured by `work.nix` to route through `~/.ssh/$(hostname)-personal-key`.
+The `github-personal` SSH host is configured by `work.nix` to route through
+`~/.ssh/$(hostname)-personal-key`.
 
 ```bash
 git clone git@github-personal:hello-joni/0config.git ~/0config
