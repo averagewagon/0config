@@ -32,12 +32,14 @@
         | sort | uniq -c | sort -nr | head -20
     '')
     (writeShellScriptBin ",git-contributors" ''
-      echo "Contributors ranked by commit count. Optional: pass a date to filter, e.g. '2026-01-01'."
+      echo "Contributors ranked by commit count. Optional: pass a date to filter, e.g. '2026-01-01', and/or a path."
       echo ""
-      if [ -n "$1" ]; then
-        git shortlog -sn --no-merges --since="$1"
+      args=(-sn --no-merges)
+      [ -n "''${1:-}" ] && args+=(--since="$1")
+      if [ -n "''${2:-}" ]; then
+        git shortlog "''${args[@]}" HEAD -- "$2"
       else
-        git shortlog -sn --no-merges
+        git shortlog "''${args[@]}" HEAD
       fi
     '')
     (writeShellScriptBin ",git-bugs" ''
@@ -58,9 +60,111 @@
       fi
     '')
     (writeShellScriptBin ",git-firefights" ''
-      echo "Reverts, hotfixes, and rollbacks. Optional: pass a date, e.g. '2026-01-01' (default: 1 year ago)."
+      echo "Reverts, hotfixes, and rollbacks. Optional: pass a date (default: 1 year ago) and/or a path."
       echo ""
-      git log --oneline --since="''${1:-1 year ago}" | grep -iE 'revert|hotfix|emergency|rollback'
+      since=''${1:-1 year ago}
+      if [ -n "''${2:-}" ]; then
+        git log --oneline --since="$since" -- "$2"
+      else
+        git log --oneline --since="$since"
+      fi | grep -iE 'revert|hotfix|emergency|rollback'
+    '')
+
+    (writeShellScriptBin ",git-file-churn" ''
+      echo "Stats for a single file: commits, distinct authors, first/last touched, commits/month."
+      echo "Use to assess how active or stable a file is over time."
+      echo ""
+      [ $# -eq 1 ] || { echo "usage: ,git-file-churn <path>" >&2; exit 1; }
+      path=$1
+      commits=$(git log --follow --format=%H -- "$path" | wc -l)
+      if [ "$commits" -eq 0 ]; then
+        echo "no commits touching $path"
+        exit 0
+      fi
+      authors=$(git log --follow --format=%aN -- "$path" | sort -u | wc -l)
+      first=$(git log --follow --format=%ad --date=short --reverse -- "$path" | head -1)
+      last=$(git log --follow --format=%ad --date=short -- "$path" | head -1)
+      months=$(( ( $(date -d "$last" +%s) - $(date -d "$first" +%s) ) / 2629800 + 1 ))
+      rate=$(awk -v c="$commits" -v m="$months" 'BEGIN { printf "%.2f", c/m }')
+      printf "commits:        %s\n" "$commits"
+      printf "authors:        %s\n" "$authors"
+      printf "first touched:  %s\n" "$first"
+      printf "last touched:   %s\n" "$last"
+      printf "commits/month:  %s\n" "$rate"
+    '')
+
+    (writeShellScriptBin ",git-file-cochange" ''
+      echo "Top 20 files most often committed alongside the given file."
+      echo "Files high on this list often share concerns or get touched together for the same reason."
+      echo ""
+      [ $# -eq 1 ] || { echo "usage: ,git-file-cochange <path>" >&2; exit 1; }
+      path=$1
+      shas=$(git log --follow --format=%H -- "$path")
+      [ -n "$shas" ] || { echo "no commits touching $path"; exit 0; }
+      echo "$shas" \
+        | xargs -n 50 git show --name-only --format= \
+        | grep -v '^$' \
+        | grep -vFx "$path" \
+        | sort | uniq -c | sort -nr | head -20
+    '')
+
+    (writeShellScriptBin ",git-file-recent" ''
+      echo "Last N commits touching the file (default 20). Shows date, sha, author, subject."
+      echo ""
+      [ $# -ge 1 ] || { echo "usage: ,git-file-recent <path> [n]" >&2; exit 1; }
+      path=$1
+      n=''${2:-20}
+      git log --follow --date=short --pretty=format:'%ad %h %an: %s' -n "$n" -- "$path"
+      echo ""
+    '')
+
+    (writeShellScriptBin ",git-line-log" ''
+      echo "Commit history for specific lines in a file (one line per commit, no diff)."
+      echo "Useful for spotting whether a region is stable, recently rewritten, or thrashed."
+      echo ""
+      [ $# -eq 2 ] || { echo "usage: ,git-line-log <path> <start>[:<end>]" >&2; exit 1; }
+      path=$1
+      range=$2
+      case "$range" in
+        *:*) start=''${range%:*}; end=''${range#*:} ;;
+        *)   start=$range; end=$range ;;
+      esac
+      git log -L "$start,$end:$path" --date=short --pretty=format:'%ad %h %an: %s' -s
+      echo ""
+    '')
+
+    (writeShellScriptBin ",git-line-blame" ''
+      echo "Blame summary: % of lines per author and median line age. Optional line range."
+      echo "Old + concentrated lines are stable; young + scattered lines are in flux."
+      echo ""
+      [ $# -ge 1 ] || { echo "usage: ,git-line-blame <path> [start[:end]]" >&2; exit 1; }
+      path=$1
+      range_args=()
+      if [ $# -ge 2 ]; then
+        range=$2
+        case "$range" in
+          *:*) start=''${range%:*}; end=''${range#*:} ;;
+          *)   start=$range; end=$range ;;
+        esac
+        range_args=(-L "$start,$end")
+      fi
+      blame=$(git blame --line-porcelain "''${range_args[@]}" -- "$path")
+      [ -n "$blame" ] || { echo "no blame output for $path"; exit 0; }
+      echo "$blame" | awk '
+        /^author / { author = substr($0, 8) }
+        /^author-time / { by_author[author]++; total++ }
+        END { for (a in by_author) printf "%6.1f%%  %s\n", 100*by_author[a]/total, a }
+      ' | sort -nr
+      echo ""
+      echo "$blame" | awk '/^author-time / { print $2 }' | sort -n \
+        | awk -v now="$(date +%s)" '
+          { a[NR]=$1 }
+          END {
+            if (NR == 0) exit
+            m = (NR % 2) ? a[(NR+1)/2] : (a[NR/2]+a[NR/2+1])/2
+            days = int((now - m) / 86400)
+            printf "median line age: %d days\n", days
+          }'
     '')
 
     # Conventional Commits cheatsheet
