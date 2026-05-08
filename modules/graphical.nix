@@ -60,6 +60,11 @@
         };
       };
       extend_comment_on_newline = false;
+      # Disable AI inline edit predictions
+      features = {
+        edit_prediction_provider = "none";
+      };
+      show_edit_predictions = false;
       icon_theme = "Catppuccin Frappé";
       theme = "Gruvbox Dark Hard";
       buffer_font_features = {
