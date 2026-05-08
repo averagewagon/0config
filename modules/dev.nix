@@ -11,6 +11,12 @@
   };
   programs.info.enable = true;
 
+  # Auto-activate flake dev shells via `.envrc` containing `use flake`.
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   home.packages = with pkgs; [
     nil # Nix language server
     nixd # Other Nix language server
