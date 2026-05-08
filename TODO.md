@@ -27,3 +27,6 @@
 - Investigate https://flathub.org/en/apps/io.github.aganzha.Stage
 - Update Home Manager major version
 - Home Assistant
+- Script that goes out and updates home manager on all my servers
+- Use Kagi
+- Raspberry Pi MDM

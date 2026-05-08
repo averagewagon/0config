@@ -30,6 +30,7 @@
       micro # Lightweight text editor
       bat # cat with highlighting
       htop # View running processes
+      nix-your-shell # Make nix-shell/nix develop launch fish instead of bash
     ];
 
     programs = {
@@ -66,6 +67,18 @@
         interactiveShellInit = ''
           fish_config theme choose base16-default
           fish_config prompt choose default
+          # Make `nix develop` / `nix shell` launch fish instead of bash
+          nix-your-shell fish | source
+          # Prefix the prompt with "(nix)" when in a nix shell
+          functions -c fish_prompt _default_fish_prompt
+          function fish_prompt
+            if set -q IN_NIX_SHELL
+              set_color blue
+              echo -n "(nix) "
+              set_color normal
+            end
+            _default_fish_prompt
+          end
           # Force nvim as editor
           set -gx EDITOR nvim
           set -gx VISUAL nvim
