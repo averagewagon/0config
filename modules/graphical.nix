@@ -40,6 +40,8 @@
     package = config.lib.nixGL.wrap pkgs.zed-editor;
     extensions = [
       "nix"
+      "rust"
+      "toml"
       "catppuccin-icons"
       "git-firefly"
       "TOML"
@@ -48,12 +50,26 @@
     ];
     userSettings = {
       agent = {
+        dock = "right";
         use_modifier_to_send = false;
-        play_sound_when_agent_done = true;
+        play_sound_when_agent_done = "always";
+        notify_when_agent_waiting = "primary_screen";
+        thinking_display = "always_expanded";
       };
       collaboration_panel = {
+        dock = "left";
         button = false;
       };
+      project_panel = {
+        dock = "left";
+      };
+      outline_panel = {
+        dock = "left";
+      };
+      git_panel = {
+        dock = "left";
+      };
+      diff_view_style = "split";
       agent_servers = {
         claude-acp = {
           type = "registry";
