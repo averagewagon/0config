@@ -30,3 +30,17 @@
 - Script that goes out and updates home manager on all my servers
 - Use Kagi
 - Raspberry Pi MDM
+- Add libvirt VM examples
+  - ubuntu
+  - fedora
+  - alpine
+  - rocky
+  - nixos
+- Update flow-control.dev package
+- container vm
+  - bootc for bootloader
+  - OCI container rootfs for whatever
+  - qemu as runner
+  - container is PID 1
+  - using OCI container format as means of distributing disk image
+  - layer my keys and such on top
