@@ -256,6 +256,11 @@
         appId = "com.github.PintaProject.Pinta";
         origin = "flathub";
       }
+      {
+        # VM manager for quick one-off VMs (KVM-backed)
+        appId = "org.gnome.Boxes";
+        origin = "flathub";
+      }
     ];
     overrides = {
       # Librewolf needs camera access for video calls
